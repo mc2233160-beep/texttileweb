@@ -83,12 +83,32 @@ WSGI_APPLICATION = "textile_project.wsgi.application"
 
 # Default to SQLite if DB_NAME is not set (useful for local dev without env vars)
 # Default to SQLite if DB_NAME is not set (useful for local dev without env vars)
-DATABASES = {
-    'default': dj_database_url.config(
-        default='sqlite:///' + str(BASE_DIR / 'db.sqlite3'),
-        conn_max_age=600
-    )
-}
+# Database configuration
+# 1. Look for DATABASE_URL (Render/Production)
+if os.getenv('DATABASE_URL'):
+    DATABASES = {
+        'default': dj_database_url.config(conn_max_age=600, ssl_require=True)
+    }
+# 2. Look for explicit DB vars (Local Dev - MySQL/Postgres)
+elif os.getenv('DB_NAME'):
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.mysql', # Or whatever logic was there, assuming MySQL based on previous file
+            'NAME': os.getenv('DB_NAME'),
+            'USER': os.getenv('DB_USER'),
+            'PASSWORD': os.getenv('DB_PASSWORD'),
+            'HOST': os.getenv('DB_HOST', 'localhost'),
+            'PORT': os.getenv('DB_PORT', '3306'),
+        }
+    }
+# 3. Fallback to SQLite
+else:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': BASE_DIR / 'db.sqlite3',
+        }
+    }
 
 
 # Password validation
