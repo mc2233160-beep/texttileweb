@@ -1,7 +1,9 @@
 <?php
 
 // The email address where you will RECEIVE the contact form submissions.
-$recipient_email = "rutvisheta87@gmail.com"; 
+// $recipient_email = "rutvisheta87@gmail.com"; 
+
+$recipient_email = "mayurchavada1212@"; 
 
 
 

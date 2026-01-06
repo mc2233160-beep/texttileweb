@@ -1,92 +1,165 @@
-// Ensure all scripts run only after the DOM is fully loaded
-document.addEventListener('DOMContentLoaded', function() {
+/**
+ * Main application initialization
+ * Handles DOM setup, event listeners, and core functionality
+ */
+(function() {
+    'use strict';
 
-    // --- Mobile Navigation Toggle ---
-    const navToggle = document.getElementById('navToggle');
-    const navMenu = document.getElementById('navMenu');
-
-    if (navToggle && navMenu) {
-        navToggle.addEventListener('click', function() {
-            navToggle.classList.toggle('active');
-            navMenu.classList.toggle('active');
-        });
-
-        // Close menu when clicking on a link
-        const navLinks = navMenu.querySelectorAll('.nav-link');
-        navLinks.forEach(link => {
-            link.addEventListener('click', () => {
-                navToggle.classList.remove('active');
-                navMenu.classList.remove('active');
-            });
-        });
-
-        // Close menu when clicking outside
-        document.addEventListener('click', function(e) {
-            if (!navToggle.contains(e.target) && !navMenu.contains(e.target)) {
-                navToggle.classList.remove('active');
-                navMenu.classList.remove('active');
-            }
-        });
-    }
-
-    // --- Navbar background style (Removed scroll listener) ---
-    const navbar = document.querySelector('.navbar');
-    if (navbar) {
-        // Set fixed background color and shadow properties on load
-        navbar.style.background = '#1E3A8A'; // your blue color
-        navbar.style.boxShadow = 'none';
-    }
-
-
-    // --- Product Detail Page Functionality ---
+    // Cache DOM elements
+    const domElements = {};
     
-    // Get product parameter from URL
-    const urlParams = new URLSearchParams(window.location.search);
-    const productParam = urlParams.get('product');
+    // Initialize the application when DOM is fully loaded
+    document.addEventListener('DOMContentLoaded', function() {
+        try {
+            initializeElements();
+            setupEventListeners();
+            setupNavigation();
+            handleProductPage();
+        } catch (error) {
+            console.error('Initialization error:', error);
+        }
 
-    if (productParam && document.getElementById('productName')) {
-        loadProductDetails(productParam);
+    };
+
+    /**
+     * Initialize DOM elements
+     */
+    function initializeElements() {
+        domElements.navToggle = document.getElementById('navToggle');
+        domElements.navMenu = document.getElementById('navMenu');
+        domElements.navbar = document.querySelector('.navbar');
+        domElements.mainImage = document.getElementById('mainProductImage');
+        domElements.colorOptions = document.getElementById('colorOptions');
+        domElements.designOptions = document.getElementById('designOptions');
     }
 
-    // Color and Design Selection
-    const colorOptions = document.getElementById('colorOptions');
-    const designOptions = document.getElementById('designOptions');
-    const mainImage = document.getElementById('mainProductImage');
+    /**
+     * Set up event listeners
+     */
+    function setupEventListeners() {
+        // Navigation
+        if (domElements.navToggle && domElements.navMenu) {
+            domElements.navToggle.addEventListener('click', toggleMobileMenu);
+            document.addEventListener('click', handleOutsideClick);
+        }
 
-    if (colorOptions) {
-        colorOptions.addEventListener('click', function(e) {
-            if (e.target.classList.contains('variant-btn')) {
-                // Remove active class from all color buttons
-                colorOptions.querySelectorAll('.variant-btn').forEach(btn => {
-                    btn.classList.remove('active');
-                });
-
-                // Add active class to clicked button
-                e.target.classList.add('active');
-
-                // Change main image based on color selection
-                const color = e.target.dataset.color;
-                updateProductImage(color);
-                updateProductForm(); // Update form on color change
-            }
-        });
+        // Product options
+        if (domElements.colorOptions) {
+            domElements.colorOptions.addEventListener('click', handleColorSelection);
+        }
+        
+        if (domElements.designOptions) {
+            domElements.designOptions.addEventListener('click', handleDesignSelection);
+        }
     }
 
-    if (designOptions) {
-        designOptions.addEventListener('click', function(e) {
-            if (e.target.classList.contains('variant-btn')) {
-                // Remove active class from all design buttons
-                designOptions.querySelectorAll('.variant-btn').forEach(btn => {
-                    btn.classList.remove('active');
-                });
+    /**
+     * Toggle mobile navigation menu
+     */
+    function toggleMobileMenu() {
+        domElements.navToggle.classList.toggle('active');
+        domElements.navMenu.classList.toggle('active');
+        
+        // Update ARIA attributes for accessibility
+        const isExpanded = domElements.navToggle.classList.contains('active');
+        domElements.navToggle.setAttribute('aria-expanded', isExpanded);
+        domElements.navMenu.setAttribute('aria-hidden', !isExpanded);
+    }
 
-                // Add active class to clicked button
-                e.target.classList.add('active');
+    /**
+     * Handle clicks outside the navigation
+     * @param {Event} e - The click event
+     */
+    function handleOutsideClick(e) {
+        if (!domElements.navToggle.contains(e.target) && !domElements.navMenu.contains(e.target)) {
+            domElements.navToggle.classList.remove('active');
+            domElements.navMenu.classList.remove('active');
+            domElements.navToggle.setAttribute('aria-expanded', 'false');
+            domElements.navMenu.setAttribute('aria-hidden', 'true');
+        }
+    }
 
-                // Update product name in form
-                updateProductForm();
+    /**
+     * Set up navigation styles and behaviors
+     */
+    function setupNavigation() {
+        if (domElements.navbar) {
+            // Set fixed background color and shadow properties on load
+            Object.assign(domElements.navbar.style, {
+                background: '#1E3A8A',
+                boxShadow: 'none',
+                transition: 'background-color 0.3s ease, box-shadow 0.3s ease'
+            });
+        }
+    }
+
+
+    /**
+     * Handle product page specific functionality
+     */
+    function handleProductPage() {
+        const urlParams = new URLSearchParams(window.location.search);
+        const productParam = urlParams.get('product');
+
+        if (productParam && document.getElementById('productName')) {
+            try {
+                loadProductDetails(productParam);
+            } catch (error) {
+                console.error('Error loading product details:', error);
+                // Show user-friendly error message
+                const productContainer = document.querySelector('.product-detail');
+                if (productContainer) {
+                    productContainer.innerHTML = `
+                        <div class="error-message">
+                            <h2>Product Not Found</h2>
+                            <p>We're sorry, but we couldn't find the requested product. Please try again later or browse our <a href="/products">products page</a>.</p>
+                        </div>
+                    `;
+                }
             }
-        });
+        }
+    }
+
+    /**
+     * Handle color selection for products
+     * @param {Event} e - The click event
+     */
+    function handleColorSelection(e) {
+        const target = e.target.closest('.variant-btn');
+        if (!target) return;
+
+        e.preventDefault();
+        
+        // Update active state
+        const buttons = domElements.colorOptions.querySelectorAll('.variant-btn');
+        buttons.forEach(btn => btn.classList.remove('active'));
+        target.classList.add('active');
+
+        // Update product image
+        const color = target.dataset.color;
+        if (color) {
+            updateProductImage(color);
+            updateProductForm();
+        }
+    }
+
+    /**
+     * Handle design selection for products
+     * @param {Event} e - The click event
+     */
+    function handleDesignSelection(e) {
+        const target = e.target.closest('.variant-btn');
+        if (!target) return;
+
+        e.preventDefault();
+        
+        // Update active state
+        const buttons = domElements.designOptions.querySelectorAll('.variant-btn');
+        buttons.forEach(btn => btn.classList.remove('active'));
+        target.classList.add('active');
+
+        // Update product form
+        updateProductForm();
     }
 
     function loadProductDetails(productId) {
@@ -316,84 +389,149 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
 
-    // --- Smooth scrolling for anchor links ---
-    const links = document.querySelectorAll('a[href^="#"]');
+    /**
+     * Initialize smooth scrolling for anchor links
+     */
+    function initSmoothScrolling() {
+        const links = document.querySelectorAll('a[href^="#"]');
+        
+        links.forEach(link => {
+            link.addEventListener('click', function(e) {
+                const href = this.getAttribute('href');
+                if (href === '#' || href === '#!') return;
 
-    links.forEach(link => {
-        link.addEventListener('click', function(e) {
-            const href = this.getAttribute('href');
-            if (href === '#') return;
-
-            e.preventDefault();
-
-            const target = document.querySelector(href);
-            if (target) {
-                target.scrollIntoView({
-                    behavior: 'smooth',
-                    block: 'start'
-                });
-            }
+                e.preventDefault();
+                const target = document.querySelector(href);
+                
+                if (target) {
+                    // Use smooth scroll if supported
+                    if ('scrollBehavior' in document.documentElement.style) {
+                        target.scrollIntoView({
+                            behavior: 'smooth',
+                            block: 'start'
+                        });
+                    } else {
+                        // Fallback for browsers that don't support smooth scrolling
+                        target.scrollIntoView();
+                    }
+                }
+            });
         });
-    });
+    }
 
-
-    // --- Lazy loading for images ---
-    const images = document.querySelectorAll('img[data-src]'); // Only observe images with data-src
-
-    const imageObserver = new IntersectionObserver((entries, observer) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                const img = entry.target;
+    /**
+     * Initialize lazy loading for images
+     */
+    function initLazyLoading() {
+        // Only initialize if IntersectionObserver is supported
+        if (!('IntersectionObserver' in window)) {
+            // Fallback: Load all images immediately
+            document.querySelectorAll('img[data-src]').forEach(img => {
                 if (img.dataset.src) {
                     img.src = img.dataset.src;
                     img.removeAttribute('data-src');
                 }
-                img.style.opacity = '1';
-                observer.unobserve(img);
-            }
-        });
-    }, { threshold: 0.05 }); // Lower threshold to start loading slightly sooner
-
-    images.forEach(img => {
-        // Only apply transition if the image hasn't loaded immediately
-        if (!img.complete) {
-            img.style.opacity = '0';
-            img.style.transition = 'opacity 0.3s ease';
+            });
+            return;
         }
-        imageObserver.observe(img);
+
+        const imageObserver = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const img = entry.target;
+                    if (img.dataset.src) {
+                        // Use requestIdleCallback if available for better performance
+                        const loadImage = () => {
+                            img.src = img.dataset.src;
+                            img.removeAttribute('data-src');
+                            img.style.opacity = '1';
+                        };
+                        
+                        if ('requestIdleCallback' in window) {
+                            window.requestIdleCallback(loadImage, { timeout: 2000 });
+                        } else {
+                            loadImage();
+                        }
+                    }
+                    observer.unobserve(img);
+                }
+            });
+        }, { 
+            rootMargin: '200px', // Start loading images 200px before they're in viewport
+            threshold: 0.01 
+        });
+
+        document.querySelectorAll('img[data-src]').forEach(img => {
+            // Only apply transition if the image hasn't loaded immediately
+            if (!img.complete) {
+                img.style.opacity = '0';
+                img.style.transition = 'opacity 0.3s ease';
+                
+                // Handle image load errors
+                img.addEventListener('error', function() {
+                    this.style.opacity = '1';
+                    this.alt = 'Image could not be loaded';
+                    // Optionally set a placeholder image
+                    // this.src = 'path/to/placeholder.jpg';
+                });
+            }
+            
+            imageObserver.observe(img);
+        });
+    }
+
+    /**
+     * Initialize reveal animations for cards and sections
+     */
+    function initRevealAnimations() {
+        // Remove loading class once page is loaded
+        document.body.classList.add('loaded');
+
+        // Only use IntersectionObserver if supported
+        if (!('IntersectionObserver' in window)) {
+            // Fallback: Show all cards immediately
+            document.querySelectorAll('.category-card, .product-card, .fabric-card, .mission-card, .trust-item')
+                .forEach(card => {
+                    card.style.opacity = '1';
+                    card.style.transform = 'translateY(0)';
+                });
+            return;
+        }
+
+        const cards = document.querySelectorAll('.category-card, .product-card, .fabric-card, .mission-card, .trust-item');
         
-        // If image is already in the DOM but hasn't had the opacity set yet (e.g., cached image on refresh)
-        if (img.complete && img.style.opacity === '0') {
-            img.style.opacity = '1';
-        }
-    });
-
-
-    // --- Add loading and reveal animation ---
-    
-    // Remove loading class once page is loaded
-    document.body.classList.add('loaded');
-
-    // Add smooth reveal animation to cards
-    const cards = document.querySelectorAll('.category-card, .product-card, .fabric-card, .mission-card, .trust-item');
-
-    const cardObserver = new IntersectionObserver((entries) => {
-        entries.forEach((entry, index) => {
-            if (entry.isIntersecting) {
-                // Apply a staggered delay based on the card's position in the visible area (index is for the array of observed elements)
-                setTimeout(() => {
-                    entry.target.style.opacity = '1';
-                    entry.target.style.transform = 'translateY(0)';
-                    cardObserver.unobserve(entry.target); // Stop observing after animation
-                }, index * 100);
-            }
+        const cardObserver = new IntersectionObserver((entries) => {
+            entries.forEach((entry, index) => {
+                if (entry.isIntersecting) {
+                    // Use requestAnimationFrame for smoother animations
+                    requestAnimationFrame(() => {
+                        // Apply staggered delay based on the card's position
+                        setTimeout(() => {
+                            entry.target.style.opacity = '1';
+                            entry.target.style.transform = 'translateY(0)';
+                            cardObserver.unobserve(entry.target);
+                        }, Math.min(index * 50, 300)); // Cap the maximum delay at 300ms
+                    });
+                }
+            });
+        }, { 
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px' // Start animation when element is 50px from bottom of viewport
         });
-    }, { threshold: 0.1 });
 
-    cards.forEach(card => {
-        card.style.opacity = '0';
-        card.style.transform = 'translateY(30px)';
-        card.style.transition = 'all 0.6s ease';
-        cardObserver.observe(card);
-    });
-});
+        cards.forEach(card => {
+            card.style.opacity = '0';
+            card.style.transform = 'translateY(20px)';
+            card.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+            card.style.willChange = 'opacity, transform';
+            cardObserver.observe(card);
+        });
+    }
+
+    // Initialize all components
+    initSmoothScrolling();
+    initLazyLoading();
+    initRevealAnimations();
+
+    }); // End of DOMContentLoaded
+})(); // End of IIFE
