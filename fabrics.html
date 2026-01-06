@@ -1,0 +1,878 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Fabric Design and Color Catalog</title>
+    <link rel="stylesheet" href="style.css" />
+    <style>
+        /* General Styles for the page content */
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            font-size: 28px;
+            margin: 40px 0 50px;
+            text-align: center;
+            color: #004080;
+        }
+
+        /* Header Style */
+        .product-row h2 {
+            margin: 40px 0 20px;
+            font-size: 22px;
+            color: #444;
+            background-color: #f5f3db;
+            padding: 12px 15px;
+            border-radius: 6px;
+            border-left: 5px solid #004080;
+            border-bottom: none;
+        }
+        
+        /* --- Slider/Carousel Styles --- */
+        .slider-wrapper {
+            position: relative;
+            margin-bottom: 40px;
+        }
+
+        .grid {
+            display: flex;
+            overflow-x: scroll;
+            scroll-snap-type: x mandatory;
+            padding: 10px 0;
+            gap: 24px;
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+        .grid::-webkit-scrollbar {
+            display: none;
+        }
+
+        /* Card sizing within the slider */
+        .card {
+            min-width: 260px;
+            flex: 0 0 auto;
+            scroll-snap-align: start;
+            background: #fff;
+            border-radius: 14px;
+            box-shadow: 0 3px 8px rgba(0,0,0,0.08);
+            overflow: hidden;
+            transition: transform 0.2s ease;
+            display: flex;
+            flex-direction: column;
+            cursor: pointer;
+        }
+        .card:hover {
+            transform: translateY(-4px);
+        }
+
+        /* --- Image/Preview Styles (Updated) --- */
+        .fabric-preview {
+            position: relative;
+            height: 180px; /* Slightly taller for better view */
+            overflow: hidden;
+            background-color: #eee; /* Placeholder background */
+        }
+        .design-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: opacity 0.35s ease, transform 0.3s ease, box-shadow 0.3s ease;
+            display: block;
+            border-radius: 14px 14px 0 0; /* Match card border radius */
+            opacity: 1;
+        }
+
+        /* New: Enlarged/Selected State */
+        .card.enlarged .design-image {
+            transform: scale(1.05); /* Slightly enlarge image on click */
+            box-shadow: 0 0 0 5px var(--selected-color, transparent); /* Highlight with selected color */
+        }
+        .card.enlarged {
+            box-shadow: 0 6px 16px rgba(0,0,0,0.2); /* Lift the card slightly */
+        }
+
+        .card-body {
+            padding: 16px;
+        }
+        .card-title {
+            font-size: 17px;
+            font-weight: 600;
+            margin-bottom: 12px;
+        }
+        .variants-label {
+            font-size: 13px;
+            font-weight: 500;
+            color: #666;
+            margin-bottom: 8px;
+        }
+        .swatches {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+        .swatch {
+            width: 28px;
+            height: 28px;
+            border-radius: 4px; /* Changed to square patch */
+            border: 2px solid #ccc; /* Thicker border */
+            cursor: pointer;
+            transition: transform 0.2s, border 0.2s;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+        /* Highlight selected swatch */
+        .swatch.active {
+            border-color: #000;
+            box-shadow: 0 0 0 3px rgba(0,0,0,0.1);
+            transform: scale(1.1);
+        }
+
+
+        /* nav toggle open class (basic) */
+        .nav-menu.open { display:block !important; }
+        @media (max-width:768px) {
+            .nav-menu { display:none; }
+            .nav-toggle { display:block; cursor:pointer; }
+        }
+
+        /* Enlarged modal */
+.card-enlarged-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.65);
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  z-index:9999;
+  animation: fadeIn 240ms ease;
+}
+
+.card-enlarged {
+  background:#fff;
+  border-radius:14px;
+  padding:18px;
+  width:92%;
+  max-width:520px;
+  box-shadow:0 10px 30px rgba(0,0,0,0.35);
+  position:relative;
+  animation: zoomIn 220ms ease;
+}
+
+.card-enlarged img {
+  width:100%;
+  height:auto;              /* Let image keep its natural aspect ratio */
+  object-fit:contain;       /* Show the entire image */
+  max-height:80vh;          /* Prevent it from overflowing the screen */
+  border-radius:10px;
+  display:block;
+  margin-bottom:12px;
+}
+
+
+.card-close {
+  position:absolute;
+  right:12px;
+  top:10px;
+  font-size:26px;
+  line-height:26px;
+  cursor:pointer;
+  color:#222;
+}
+
+/* keep swatch look consistent in modal */
+.card-enlarged .swatch { width:34px; height:34px; border-radius:6px; border:2px solid #ccc; margin-right:8px; }
+.card-enlarged .swatches { display:flex; justify-content:center; flex-wrap:wrap; gap:8px; }
+
+/* animation */
+@keyframes fadeIn { from { opacity:0 } to { opacity:1 } }
+@keyframes zoomIn { from { transform:scale(.96); opacity:0 } to { transform:scale(1); opacity:1 } }
+
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="container">
+            <div class="nav-brand">
+                <a href="index.html">
+                    <img src="images/JC Logo.JPG" class="logo" alt="JyotiCreation logo" />
+                </a>
+            </div>
+            <div class="nav-menu" id="navMenu">
+                <a href="index.html" class="nav-link ">Home</a>
+                <a href="about.html" class="nav-link">About Us</a>
+
+                <div class="nav-dropdown">
+                    <a href="products.html" class="nav-link">Products</a>
+                    <div class="dropdown-content">
+                        <a href="table-linen.html">Table Linen</a>
+                        <a href="chair-linen.html">Chair Linen</a>
+                        <a href="napkins.html">Napkins</a>
+                        <a href="bed-linen.html">Bed Linen</a>
+                        <a href="bath-linen.html">Bath Linen</a>
+                        <a href="premium-fabric.html">Premium Fabrics</a>
+                    </div>
+                </div>
+
+                <a href="fabrics.html" class="nav-link active">Fabric Design</a>
+                <a href="contact.html" class="nav-link">Contact</a>
+            </div>
+            <div class="nav-toggle" id="navToggle">
+                <span>☰</span>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <h1>Fabric Design Catalog</h1>
+
+        <div class="product-row">
+            <h2>Table Covers</h2>
+            <div class="slider-wrapper">
+                <div class="grid" id="table-covers-slider">
+                    
+                    <div class="card" data-design="Poly Vintage">
+                        <div class="fabric-preview">
+                            <img class="design-image" src="t_design/Ploy_vintage.jpeg" alt="Poly Vintage">
+                        </div>
+                        <div class="card-body">
+                            <div class="card-title">Poly Vintage</div>
+                            <div class="variants-label">Available Colors</div>
+                            <div class="swatches">
+                                <div class="swatch" style="background:#7b1220;" data-color="#7b1220"></div>
+                                <div class="swatch" style="background:#4178f0;" data-color="#000"></div>
+                                <div class="swatch" style="background:ivory;" data-color="#0b1a3a"></div>
+                                <div class="swatch" style="background:#000;" data-color="#fff"></div>
+                                <div class="swatch" style="background:beige;" data-color="#fff"></div>
+                                <div class="swatch" style="background:white" data-color="#fff"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card" data-design="Poly Marble">
+                        <div class="fabric-preview">
+                            <img class="design-image" src="t_design/Poly_Marble.jpeg" alt="Poly Marble">
+                        </div>
+                        <div class="card-body">
+                            <div class="card-title">Poly Marble</div>
+                            <div class="variants-label">Available Colors</div>
+                            <div class="swatches">
+                                <div class="swatch" style="background:beige;" data-color="#7b1220"></div>
+                                <div class="swatch" style="background:maroon;" data-color="#000"></div>
+                                <div class="swatch" style="background:ivory;" data-color="#0b1a3a"></div>
+                                <div class="swatch" style="background:purple;" data-color="#fff"></div>
+                                <div class="swatch" style="background:royalblue;" data-color="#fff"></div>
+                                <div class="swatch" style="background:black" data-color="#fff"></div>
+                                <div class="swatch" style="background:navy" data-color="#fff"></div>
+                                <div class="swatch" style="background:gray" data-color="#fff"></div>
+                                <div class="swatch" style="background:white" data-color="#fff"></div>
+                                <div class="swatch" style="background:lightblue" data-color="#fff"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card" data-design="Poly Sparkle">
+                        <div class="fabric-preview">
+                            <img class="design-image" src="t_design/Poly_Sparkle.jpeg" alt="Poly Sparkle" />
+                        </div>
+                        <div class="card-body">
+                            <div class="card-title">Poly Sparkle</div>
+                            <div class="variants-label">Available Colors</div>
+                            <div class="swatches">
+                                <div class="swatch" style="background:beige;" data-color="#d7b07a"></div>
+                                <div class="swatch" style="background:gold;" data-color="#f2e8b8"></div>
+                                <div class="swatch" style="background:maroon;" data-color="#7c603a"></div>
+                                <div class="swatch" style="background:black;" data-color="#7c603a"></div>
+                                <div class="swatch" style="background:white" data-color="#fff"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card" data-design="Poly Elegance Plain">
+                        <div class="fabric-preview">
+                            <img class="design-image" src="t_design/Poly_Elegance_Plain.jpeg" alt="Poly Elegance Plain" />
+                        </div>
+                        <div class="card-body">
+                            <div class="card-title">Poly Elegance Plain</div>
+                            <div class="variants-label">Available Colors</div>
+                            <div class="swatches">
+                                <div class="swatch" style="background:ivory;" data-color="#d7b07a"></div>
+                                <div class="swatch" style="background:black;" data-color="#f2e8b8"></div>
+                                <div class="swatch" style="background:beige;" data-color="#7c603a"></div>
+                                <div class="swatch" style="background:rgb(174, 14, 14);" data-color="#7c603a"></div>
+                                <div class="swatch" style="background:maroon;" data-color="#7c603a"></div>
+                                <div class="swatch" style="background:navy;" data-color="#7c603a"></div>
+                                <div class="swatch" style="background:white" data-color="#fff"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card" data-design="Poly Mint">
+                        <div class="fabric-preview">
+                            <img class="design-image" src="t_design/Poly_Mint.jpeg" alt="Poly Mint" />
+                        </div>
+                        <div class="card-body">
+                            <div class="card-title">Poly Mint</div>
+                            <div class="variants-label">Available Colors</div>
+                            <div class="swatches">
+                                <div class="swatch" style="background:maroon;" data-color="#d7b07a"></div>
+                                <div class="swatch" style="background:black;" data-color="#f2e8b8"></div>
+                                <div class="swatch" style="background:beige;" data-color="#7c603a"></div>
+                                <div class="swatch" style="background:white" data-color="#fff"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card" data-design="Poly Peacock">
+                        <div class="fabric-preview">
+                            <img class="design-image" src="t_design/Poly_Peacock.jpeg" alt="Poly Peacock" />
+                        </div>
+                        <div class="card-body">
+                            <div class="card-title">Poly Peacock</div>
+                            <div class="variants-label">Available Colors</div>
+                            <div class="swatches">
+                                <div class="swatch" style="background:black;" data-color="#808080"></div>
+                                <div class="swatch" style="background:gold;" data-color="#004080"></div>
+                                <div class="swatch" style="background:grey;" data-color="#004080"></div>
+                                <div class="swatch" style="background:rgb(7, 85, 113);" data-color="#004080"></div>
+                                <div class="swatch" style="background:white;" data-color="#004080"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card" data-design="Poly QR Code">
+                        <div class="fabric-preview">
+                            <img class="design-image" src="t_design/Poly_QR_Code.jpeg" alt="Poly QR Code" />
+                        </div>
+                        <div class="card-body">
+                            <div class="card-title">Poly QR Code</div>
+                            <div class="variants-label">Available Colors</div>
+                            <div class="swatches">
+                                <div class="swatch" style="background:navy;" data-color="#c0c0c0"></div>
+                                <div class="swatch" style="background:black;" data-color="#eeddcc"></div>
+                                <div class="swatch" style="background:beige;" data-color="#eeddcc"></div>
+                                <div class="swatch" style="background:green;" data-color="#eeddcc"></div>
+                                <div class="swatch" style="background:white;" data-color="#eeddcc"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card" data-design="Poly Satin">
+                        <div class="fabric-preview">
+                            <img class="design-image" src="t_design/Poly_Satin.jpeg" alt="Poly Satin" />
+                        </div>
+                        <div class="card-body">
+                            <div class="card-title">Poly Satin</div>
+                            <div class="variants-label">Available Colors</div>
+                            <div class="swatches">
+                                <div class="swatch" style="background:beige;" data-color="#808080"></div>
+                                <div class="swatch" style="background:navy;" data-color="#004080"></div>
+                                <div class="swatch" style="background:maroon;" data-color="#004080"></div>
+                                <div class="swatch" style="background:black;" data-color="#004080"></div>
+                                <div class="swatch" style="background:ivory;" data-color="#004080"></div>
+                                <div class="swatch" style="background:white;" data-color="#004080"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card" data-design="Poly Flamingo">
+                        <div class="fabric-preview">
+                            <img class="design-image" src="t_design/Poly_Flamingo.jpeg" alt="Poly Flamingo" />
+                        </div>
+                        <div class="card-body">
+                            <div class="card-title">Poly Flamingo</div>
+                            <div class="variants-label">Available Colors</div>
+                            <div class="swatches">
+                                <div class="swatch" style="background:beige;" data-color="#808080"></div>
+                                <div class="swatch" style="background:maroon;" data-color="#004080"></div>
+                                <div class="swatch" style="background:black;" data-color="#004080"></div>
+                                <div class="swatch" style="background:white;" data-color="#004080"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card" data-design="Poly Shiny Ringo Ring">
+                        <div class="fabric-preview">
+                            <img class="design-image" src="t_design/Poly_Ringo_Ring.jpeg" alt="Poly Shiny Ringo Ring" />
+                        </div>
+                        <div class="card-body">
+                            <div class="card-title">Poly Shiny Ringo Ring</div>
+                            <div class="variants-label">Available Colors</div>
+                            <div class="swatches">
+                                <div class="swatch" style="background:black;" data-color="#808080"></div>
+                                <div class="swatch" style="background:maroon;" data-color="#004080"></div>
+                                <div class="swatch" style="background:beige;" data-color="#004080"></div>
+                                <div class="swatch" style="background:white;" data-color="#004080"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card" data-design="Poly Paradise">
+                        <div class="fabric-preview">
+                            <img class="design-image" src="t_design/Poly Paradise.jpeg" alt="Poly Paradise" />
+                        </div>
+                        <div class="card-body">
+                            <div class="card-title">Poly Paradise</div>
+                            <div class="variants-label">Available Colors</div>
+                            <div class="swatches">
+                                <div class="swatch" style="background:black;" data-color="#808080"></div>
+                                <div class="swatch" style="background:maroon;" data-color="#004080"></div>
+                                <div class="swatch" style="background:beige;" data-color="#004080"></div>
+                                <div class="swatch" style="background:white;" data-color="#004080"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card" data-design="Poly Daffodil">
+                        <div class="fabric-preview">
+                            <img class="design-image" src="t_design/Poly_Daffodil.jpeg" alt="Poly Daffodil" />
+                        </div>
+                        <div class="card-body">
+                            <div class="card-title">Poly Daffodil</div>
+                            <div class="variants-label">Available Colors</div>
+                            <div class="swatches">
+                                <div class="swatch" style="background:beige;" data-color="#004080"></div>
+                                <div class="swatch" style="background:ivory;" data-color="#004080"></div>
+                                <div class="swatch" style="background:white;" data-color="#004080"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card" data-design="Poly Waves">
+                        <div class="fabric-preview">
+                            <img class="design-image" src="t_design/Poly_Waves.jpeg" alt="Poly Waves" />
+                        </div>
+                        <div class="card-body">
+                            <div class="card-title">Poly Waves</div>
+                            <div class="variants-label">Available Colors</div>
+                            <div class="swatches">
+                                <div class="swatch" style="background:black;" data-color="#004080"></div>
+                                <div class="swatch" style="background:white;" data-color="#004080"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card" data-design="Poly Pebbles">
+                        <div class="fabric-preview">
+                            <img class="design-image" src="t_design/Poly_Pebbles.jpeg" alt="Poly Pebbles" />
+                        </div>
+                        <div class="card-body">
+                            <div class="card-title">Poly Pebbles</div>
+                            <div class="variants-label">Available Colors</div>
+                            <div class="swatches">
+                                <div class="swatch" style="background:black;" data-color="#004080"></div>
+                                <div class="swatch" style="background:white;" data-color="#004080"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card" data-design="Poly Royal">
+                        <div class="fabric-preview">
+                            <img class="design-image" src="t_design/Poly_Royal.jpeg" alt="Poly Royal" />
+                        </div>
+                        <div class="card-body">
+                            <div class="card-title">Poly Royal</div>
+                            <div class="variants-label">Available Colors</div>
+                            <div class="swatches">
+                                <div class="swatch" style="background:black;" data-color="#004080"></div>
+                                <div class="swatch" style="background:white;" data-color="#004080"></div>
+                            </div>
+                        </div>
+                    </div>
+
+
+
+                </div>
+            </div>
+        </div>
+
+        <!-- Chair Covers -->
+        <div class="product-row">
+            <h2>Chair Covers</h2>
+            <div class="slider-wrapper">
+                <div class="grid" id="chair-covers-slider">
+                    
+                    <div class="card" data-design="Spandex Stretch">
+                        <div class="fabric-preview">
+                            <img class="design-image" src="t_design/spandex.jpg" alt="Spandex Stretch Design" />
+                        </div>
+                        <div class="card-body">
+                            <div class="card-title">Spandex Stretch</div>
+                            <div class="variants-label">Available Colors</div>
+                            <div class="swatches">
+                                <div class="swatch" style="background:red;" data-color="#00bfff"></div>
+                                <div class="swatch" style="background:black;" data-color="#ff4500"></div>
+                                <div class="swatch" style="background:beige;" data-color="#ff4500"></div>
+                                <div class="swatch" style="background:skyblue;" data-color="#ff4500"></div>
+                                <div class="swatch" style="background:darkblue;" data-color="#ff4500"></div>
+                                <div class="swatch" style="background:gold;" data-color="#ff4500"></div>
+                                <div class="swatch" style="background:white;" data-color="#ff4500"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Napkins -->
+        <div class="product-row">
+    <h2>Napkins</h2>
+
+    <div class="category-section">
+        <h3>Cotton Napkins</h3>
+        <div class="slider-wrapper">
+            <div class="grid" id="cotton-napkins-slider">
+
+                <div class="card" data-design="Cotton Satin Band" data-material="Cotton">
+                    <div class="fabric-preview">
+                        <img class="design-image" src="t_design/cotton_satin.png" alt="Cotton Satin Band" />
+                    </div>
+                    <div class="card-body">
+                        <div class="card-title">Cotton Satin Band</div>
+                        <div class="variants-label">Available Colors</div>
+                        <div class="swatches">
+                            <div class="swatch" style="background:white;" data-color="#fffbeb"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card" data-design="All Over Diamond" data-material="Cotton">
+                    <div class="fabric-preview">
+                        <img class="design-image" src="t_design/all_diamond.png" alt="All Over Diamond" />
+                    </div>
+                    <div class="card-body">
+                        <div class="card-title">All Over Diamond</div>
+                        <div class="variants-label">Available Colors</div>
+                        <div class="swatches">
+                            <div class="swatch" style="background:white;" data-color="#b38c82"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card" data-design="Basket Weave" data-material="Cotton">
+                    <div class="fabric-preview">
+                        <img class="design-image" src="t_design/basket_weave.png" alt="Basket Weave" />
+                    </div>
+                    <div class="card-body">
+                        <div class="card-title">Basket Weave</div>
+                        <div class="variants-label">Available Colors</div>
+                        <div class="swatches">
+                            <div class="swatch" style="background:white;" data-color="#b38c82"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card" data-design="Cotton Plain" data-material="Cotton">
+                    <div class="fabric-preview">
+                        <img class="design-image" src="t_design/cotton_plain.png" alt="Cotton Plain" />
+                    </div>
+                    <div class="card-body">
+                        <div class="card-title">Cotton Plain</div>
+                        <div class="variants-label">Available Colors</div>
+                        <div class="swatches">
+                            <div class="swatch" style="background:white;" data-color="#b38c82"></div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <div class="category-section">
+        <h3>Polyester Napkins</h3>
+        <div class="slider-wrapper">
+            <div class="grid" id="polyester-napkins-slider">
+
+                <div class="card" data-design="Poly Satin Band" data-material="Polyester">
+                    <div class="fabric-preview">
+                        <img class="design-image" src="t_design/poly_satin.png" alt="Poly Satin Band" />
+                    </div>
+                    <div class="card-body">
+                        <div class="card-title">Poly Satin Band (18 X 18 , 21 X 21)</div>
+                        <div class="variants-label">Available Colors</div>
+                        <div class="swatches">
+                            <div class="swatch" style="background:#c1480c;" data-color="#008080"></div>
+                            <div class="swatch" style="background:olive;" data-color="#4682b4"></div>
+                            <div class="swatch" style="background:#cec020;" data-color="#4682b4"></div>
+                            <div class="swatch" style="background:navy" data-color="#4682b4"></div>
+                            <div class="swatch" style="background:maroon" data-color="#4682b4"></div>
+                            <div class="swatch" style="background:wheat" data-color="#4682b4"></div>
+                            <div class="swatch" style="background:gray" data-color="#4682b4"></div>
+                            <div class="swatch" style="background:purple" data-color="#4682b4"></div>
+                            <div class="swatch" style="background:rgb(98, 9, 9)" data-color="#4682b4"></div>
+                            <div class="swatch" style="background:green" data-color="#4682b4"></div>
+                            <div class="swatch" style="background:red" data-color="#4682b4"></div>
+                            <div class="swatch" style="background:blue" data-color="#4682b4"></div>
+                            <div class="swatch" style="background:orangered" data-color="#4682b4"></div>
+                            <div class="swatch" style="background:black" data-color="#4682b4"></div>
+                            <div class="swatch" style="background:white" data-color="#4682b4"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card" data-design="Bricks" data-material="Polyester">
+                    <div class="fabric-preview">
+                        <img class="design-image" src="t_design/bricks.png" alt="Bricks" />
+                    </div>
+                    <div class="card-body">
+                        <div class="card-title">Bricks</div>
+                        <div class="variants-label">Available Colors</div>
+                        <div class="swatches">
+                            <div class="swatch" style="background:white" data-color="#4682b4"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card" data-design="Rose" data-material="Polyester">
+                    <div class="fabric-preview">
+                        <img class="design-image" src="t_design/rose.png" alt="Rose" />
+                    </div>
+                    <div class="card-body">
+                        <div class="card-title">Rose</div>
+                        <div class="variants-label">Available Colors</div>
+                        <div class="swatches">
+                            <div class="swatch" style="background:white" data-color="#4682b4"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card" data-design="Ivy Leaf" data-material="Polyester">
+                    <div class="fabric-preview">
+                        <img class="design-image" src="t_design/Ivy_leaf.png" alt="Ivy Leaf" />
+                    </div>
+                    <div class="card-body">
+                        <div class="card-title">Ivy Leaf</div>
+                        <div class="variants-label">Available Colors</div>
+                        <div class="swatches">
+                            <div class="swatch" style="background:white" data-color="#4682b4"></div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+</div>
+
+    </div>
+
+   <script>
+document.addEventListener('DOMContentLoaded', () => {
+  // --- Utility: normalize base src (strip trailing _<number> before extension) ---
+  const normalizeBaseSrc = (src) => src.replace(/_\d+(?=\.[a-zA-Z]+$)/, '');
+
+  // Prepare cards: store stable base src
+  document.querySelectorAll('.card').forEach(card => {
+    const img = card.querySelector('.design-image');
+    if (!img) return;
+    card.dataset.baseSrc = normalizeBaseSrc(img.getAttribute('src'));
+  });
+
+  // --- Swatch click handling (delegated) ---
+  document.body.addEventListener('click', (e) => {
+    const sw = e.target.closest('.swatch');
+    if (!sw) return;
+    e.stopPropagation();
+
+    // Is this inside a modal enlarged card?
+    const modalCard = e.target.closest('.card-enlarged');
+    if (modalCard) {
+      handleSwatchInModal(modalCard, sw);
+      return;
+    }
+
+    // Otherwise, regular card swatch
+    const card = e.target.closest('.card');
+    if (!card) return;
+    handleSwatchInCard(card, sw);
+  });
+
+  function handleSwatchInCard(card, swatch) {
+    const designImage = card.querySelector('.design-image');
+    if (!designImage) return;
+
+    // index among swatches (1-based)
+    const swatchIndex = Array.from(swatch.parentNode.children).indexOf(swatch) + 1;
+    const base = card.dataset.baseSrc || normalizeBaseSrc(designImage.src);
+    const ext = designImage.src.match(/\.[a-zA-Z]+$/)?.[0] || '.jpeg';
+    const newSrc = base.replace(/(\.[a-zA-Z]+)$/, `_${swatchIndex}$1`);
+
+    // active style update
+    card.querySelectorAll('.swatch').forEach(s => s.classList.remove('active'));
+    swatch.classList.add('active');
+
+    // fade swap
+    fadeSwapImage(designImage, newSrc);
+
+    // highlight effect (temporary)
+    const color = swatch.dataset.color || getComputedStyle(swatch).backgroundColor;
+    card.style.setProperty('--selected-color', color);
+    card.classList.add('enlarged');
+    setTimeout(() => card.classList.remove('enlarged'), 700);
+  }
+
+  function handleSwatchInModal(modalCard, swatch) {
+    const modalImg = modalCard.querySelector('img');
+    if (!modalImg) return;
+
+    // locate original base src stored in modal dataset
+    const base = modalCard.dataset.baseSrc || normalizeBaseSrc(modalImg.src);
+    const swatchIndex = Array.from(swatch.parentNode.children).indexOf(swatch) + 1;
+    const newSrc = base.replace(/(\.[a-zA-Z]+)$/, `_${swatchIndex}$1`);
+
+    // mark active in modal
+    modalCard.querySelectorAll('.swatch').forEach(s => s.classList.remove('active'));
+    swatch.classList.add('active');
+
+    fadeSwapImage(modalImg, newSrc);
+  }
+
+  function fadeSwapImage(imgEl, newSrc) {
+    imgEl.style.transition = 'opacity 240ms ease';
+    imgEl.style.opacity = '0';
+    const tmp = new Image();
+    tmp.src = newSrc;
+    tmp.onload = () => {
+      imgEl.src = newSrc;
+      imgEl.style.opacity = '1';
+    };
+    tmp.onerror = () => { // fallback: keep original if new doesn't exist
+      imgEl.style.opacity = '1';
+    };
+  }
+
+  // --- Card click -> open modal (but ignore swatch clicks) ---
+  document.querySelectorAll('.card').forEach(card => {
+    card.addEventListener('click', (e) => {
+      if (e.target.closest('.swatch')) return; // don't open when clicking swatch
+      openEnlargedModal(card);
+    });
+  });
+
+  function openEnlargedModal(originalCard) {
+    const designImage = originalCard.querySelector('.design-image');
+    const title = originalCard.querySelector('.card-title')?.textContent || '';
+    const swatchesHTML = originalCard.querySelector('.swatches')?.outerHTML || '';
+
+    // build overlay
+    const overlay = document.createElement('div');
+    overlay.className = 'card-enlarged-overlay';
+    overlay.innerHTML = `
+      <div class="card-enlarged" role="dialog" aria-modal="true">
+        <span class="card-close" title="Close">&times;</span>
+        <img src="${designImage.src}" alt="${title}">
+        <div class="card-title">${title}</div>
+        ${swatchesHTML}
+      </div>
+    `;
+
+    // attach base src to modal's enlarged card for swatch logic
+    const modalCard = overlay.querySelector('.card-enlarged');
+    modalCard.dataset.baseSrc = originalCard.dataset.baseSrc || normalizeBaseSrc(designImage.src);
+
+    document.body.appendChild(overlay);
+
+    // copy active state from original card swatches (if any)
+    const originalSwatches = originalCard.querySelectorAll('.swatch');
+    const modalSwatches = modalCard.querySelectorAll('.swatch');
+    originalSwatches.forEach((s, idx) => {
+      if (s.classList.contains('active') && modalSwatches[idx]) {
+        modalSwatches[idx].classList.add('active');
+      }
+    });
+
+    // close handlers
+    const close = () => {
+      document.removeEventListener('keydown', onKey);
+      overlay.remove();
+    };
+    const onKey = (ev) => { if (ev.key === 'Escape') close(); };
+
+    overlay.addEventListener('click', (ev) => {
+      if (ev.target === overlay || ev.target.classList.contains('card-close')) close();
+    });
+    document.addEventListener('keydown', onKey);
+  }
+
+  // --- Auto slider functionality (only one interval per grid) ---
+  document.querySelectorAll('.grid').forEach(slider => {
+    // guard: prevent multiple intervals if script re-runs
+    if (slider.dataset.autoScrollAttached) return;
+    slider.dataset.autoScrollAttached = '1';
+
+    const scrollAmount = 300;
+    const scrollInterval = 4000;
+    const maxScroll = slider.scrollWidth - slider.clientWidth;
+
+    if (maxScroll > 0) {
+      setInterval(() => {
+        if (slider.scrollLeft >= maxScroll - 4) {
+          slider.scrollTo({ left: 0, behavior: 'smooth' });
+        } else {
+          slider.scrollBy({ left: scrollAmount, behavior: 'smooth' });
+        }
+      }, scrollInterval);
+    }
+  });
+
+  // --- Mobile Nav Toggle (safe attach) ---
+  const navToggle = document.getElementById('navToggle');
+  const navMenu = document.getElementById('navMenu');
+  if (navToggle && navMenu && !navToggle.dataset.bound) {
+    navToggle.dataset.bound = '1';
+    navToggle.addEventListener('click', () => {
+      navMenu.classList.toggle('open');
+      navToggle.classList.toggle('open');
+    });
+  }
+});
+</script>
+
+
+
+   <footer class="footer">
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-section">
+          <img src="images/JC Logo.JPG" class="logo" alt="JyotiCreation logo" /><br>
+          <p>Committed to excellence, Jyoti Creation delivers elegant, durable, and premium linens for every client seeking quality.</p>
+        
+        </div>
+
+        <div class="footer-section">
+         <div class="footer-section quick-links">
+          <h4>Quick Links</h4>
+          <ul>
+            <li><a href="about.html">About Us</a></li>
+            <li><a href="products.html">Products</a></li>
+            <li><a href="fabrics.html">Fabric Design</a></li>
+            <li><a href="contact.html">Contact</a></li>
+          </ul>
+         </div>
+        </div>
+
+        <div class="footer-section">
+          <h4>Contact Info</h4>
+          <p>📍 Jyoti Creation, 
+                B-19, Gala No. 6, 
+                Parashnath Complex, , 
+                Mankoli Road,  
+                Dapoda Road,  
+                Bhiwandi City-421302 (India)</p>
+          <p>📞 Krishna Agrawal | +91 98191 21053</p>
+          <p>✉️ sales@jyoticreation.co</p>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <p>&copy; 2024 JyotiCreation. All rights reserved. | Privacy Policy | Terms of Service</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
