@@ -1,1 +1,28 @@
-.envweb/static/
+# General
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Local environment variables
+.env
+.env.*
+
+# Virtual Environment
+venv/
+env/
+.venv/
+
+# Django Static
+staticfiles/
+dist/
+
+# Editor directories
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Database
+db.sqlite3
+
+env

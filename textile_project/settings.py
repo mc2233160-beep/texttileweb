@@ -93,7 +93,7 @@ if os.getenv('DATABASE_URL'):
 elif os.getenv('DB_NAME'):
     DATABASES = {
         'default': {
-            'ENGINE': 'django.db.backends.mysql', # Or whatever logic was there, assuming MySQL based on previous file
+            'ENGINE': 'django.db.backends.postgresql', # Updated to PostgreSQL
             'NAME': os.getenv('DB_NAME'),
             'USER': os.getenv('DB_USER'),
             'PASSWORD': os.getenv('DB_PASSWORD'),
