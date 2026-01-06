@@ -1,4 +1,4 @@
 /.envrender_env_vars.txt
 web/static/web/images/bgvideo.mp4
-web/static/web/images/
-/web/static/web
+# web/static/web/images/
+# /web/static/web
