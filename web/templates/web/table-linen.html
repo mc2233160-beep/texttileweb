@@ -1,0 +1,322 @@
+{% extends 'web/base.html' %}
+{% load static %}
+
+{% block title %}Table Linen - Jyoti Creation{% endblock %}
+
+{% block content %}
+<!-- Use the specific styles for this page from the original file, if needed, or move to style.css.
+     Given the user requested to remove 'etar code' (extra code?), I will preserve useful styles inline for now.
+-->
+<style>
+  /* small reset so spacing is predictable */
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+  }
+
+  /* Breadcrumb wrapper */
+  .breadcrumb-wrapper {
+    background: #f5f3db;
+    border-bottom: 1px solid #eee;
+    padding: 12px 0;
+  }
+
+  .breadcrumb {
+    font-size: 14px;
+    color: #666;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+  }
+
+  .breadcrumb a {
+    text-decoration: none;
+    color: #0073e6;
+    font-weight: 500;
+  }
+
+  .breadcrumb a:hover {
+    text-decoration: underline;
+  }
+
+  .breadcrumb span {
+    font-weight: 600;
+    color: #333;
+  }
+
+  /* PAGE CONTENT container for consistent padding */
+  main.page-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 18px 20px;
+    /* controls spacing above/below the whole main area */
+  }
+
+  /* SPECIFIC: control the gap between breadcrumb and page header */
+  .breadcrumb-wrapper+main.page-content .page-header {
+    margin: 12px 0 20px;
+    /* <-- change this top value (12px) to adjust gap */
+    padding-top: 0;
+    text-align: center;
+  }
+
+  /* Ensure h1 doesn't add its own top margin */
+  .page-header h1 {
+    margin: 0;
+    font-size: 32px;
+    font-weight: 700;
+    color: #0b4b76;
+  }
+
+  /* Product Grid */
+  .product-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+    margin-top: 10px;
+  }
+
+  .product-card {
+    background: #fff;
+    border-radius: 10px;
+    position: relative;
+    cursor: pointer;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s;
+    overflow: visible;
+    /* allow caption to show */
+  }
+
+  .product-card img {
+    width: 100%;
+    height: 300px;
+    object-fit: cover;
+    display: block;
+  }
+
+  .product-info {
+    padding: 12px;
+    text-align: center;
+    background: #f5f5f5;
+    border-top: 1px solid #ddd;
+    position: relative;
+    z-index: 4;
+  }
+
+  .product-info h3 {
+    margin: 0;
+    font-size: 18px;
+    font-weight: 600;
+    color: #222 !important;
+  }
+
+  .arrow-indicator {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: rgba(0, 0, 0, 0.62);
+    color: #fff;
+    padding: 6px 8px;
+    border-radius: 50%;
+    font-size: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* Lightbox (unchanged behavior) */
+  .lightbox {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.92);
+    z-index: 2000;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .lightbox.active {
+    display: flex;
+  }
+
+  .lightbox img {
+    max-width: 90%;
+    max-height: 90%;
+    border-radius: 8px;
+  }
+
+  .lightbox .close {
+    position: absolute;
+    top: 20px;
+    right: 28px;
+    color: #fff;
+    font-size: 30px;
+    cursor: pointer;
+  }
+
+  .lightbox .prev,
+  .lightbox .next {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #fff;
+    font-size: 48px;
+    cursor: pointer;
+    user-select: none;
+  }
+
+  .lightbox .prev {
+    left: 18px;
+  }
+
+  .lightbox .next {
+    right: 18px;
+  }
+
+  @media (max-width:768px) {
+    .product-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .product-card img {
+      height: 250px;
+    }
+
+    .breadcrumb {
+      padding-left: 12px;
+      padding-right: 12px;
+    }
+
+    main.page-content {
+      padding-left: 12px;
+      padding-right: 12px;
+    }
+  }
+</style>
+
+<!-- BREADCRUMB -->
+<div class="breadcrumb-wrapper">
+  <div class="breadcrumb">
+    <a href="{% url 'index' %}">Home</a> &gt;
+    <a href="{% url 'products' %}">Products</a> &gt;
+    <span>Table Linen</span>
+  </div>
+</div>
+
+<!-- MAIN CONTENT -->
+<main class="page-content">
+  <div class="page-header">
+    <h1>Table Linen Collection</h1>
+  </div>
+
+  <div class="product-grid">
+    <!-- sample cards -->
+    <div class="product-card"
+      data-images='["{% static "web/products/tl1.jpg" %}","{% static "web/products/tl1.1.jpg" %}"]'>
+      <img src="{% static 'web/products/tl1.jpg' %}" alt="Formal Tablecloth">
+      <div class="arrow-indicator">→</div>
+      <div class="product-info">
+        <h3>Formal Tablecloth</h3>
+      </div>
+    </div>
+
+    <div class="product-card"
+      data-images='["{% static "web/products/tl2.jpg" %}","{% static "web/products/tl2.2.jpg" %}","{% static "web/products/tl2.3.jpg" %}"]'>
+      <img src="{% static 'web/products/tl2.2.jpg' %}" alt="Table Underlay">
+      <div class="arrow-indicator">→</div>
+      <div class="product-info">
+        <h3>Table Underlay</h3>
+      </div>
+    </div>
+
+    <div class="product-card"
+      data-images='["{% static "web/products/tl3.jpg" %}","{% static "web/products/tl3.1.jpg" %}","{% static "web/products/tl3.2.jpeg" %}","{% static "web/products/tl3.3.png" %}"]'>
+      <img src="{% static 'web/products/tl3.4.jpeg' %}" alt="Table Overlay">
+      <div class="arrow-indicator">→</div>
+      <div class="product-info">
+        <h3>Table Overlay</h3>
+      </div>
+    </div>
+
+    <div class="product-card"
+      data-images='["{% static "web/products/tl4.jpeg" %}","{% static "web/products/tl4.1.jpeg" %}"]'>
+      <img src="{% static 'web/products/tl4.jpeg' %}" alt="Spandex Lycra Fitted Table Cover">
+      <div class="arrow-indicator">→</div>
+      <div class="product-info">
+        <h3>Spandex Lycra Fitted Cover</h3>
+      </div>
+    </div>
+
+    <div class="product-card"
+      data-images='["{% static "web/products/tl5.jpg" %}","{% static "web/products/tl5.1.jpeg" %}"]'>
+      <img src="{% static 'web/products/tl5.jpg' %}" alt="Moulton Table Protectors">
+      <div class="arrow-indicator">→</div>
+      <div class="product-info">
+        <h3>Moulton Table Protectors</h3>
+      </div>
+    </div>
+  </div>
+</main>
+
+<!-- LIGHTBOX -->
+<div class="lightbox" id="lightbox">
+  <span class="close" id="lightboxClose">&times;</span>
+  <span class="prev" id="lightboxPrev">&#10094;</span>
+  <img id="lightboxImg" src="" alt="Product image">
+  <span class="next" id="lightboxNext">&#10095;</span>
+</div>
+
+
+<script>
+  // LIGHTBOX JS (same logic as before but opens clicked image index)
+  const cards = document.querySelectorAll('.product-card');
+  const lightbox = document.getElementById('lightbox');
+  const lightboxImg = document.getElementById('lightboxImg');
+  const closeBtn = document.getElementById('lightboxClose');
+  const nextBtn = document.getElementById('lightboxNext');
+  const prevBtn = document.getElementById('lightboxPrev');
+
+  let currentImages = [];
+  let currentIndex = 0;
+
+  cards.forEach(card => {
+    const images = JSON.parse(card.getAttribute('data-images') || '[]');
+    // hide arrow if only one image
+    if (images.length <= 1) {
+      const arrow = card.querySelector('.arrow-indicator');
+      if (arrow) arrow.style.display = 'none';
+    }
+    const imgEl = card.querySelector('img');
+    // open lightbox with clicked image (if card has multiple images and you want to open the exact one,
+    // we could also detect which thumbnail was clicked; here we open the main image used in card)
+    imgEl.addEventListener('click', (e) => {
+      currentImages = images.length ? images : [imgEl.src];
+      // find index of clicked src inside currentImages (if main card src matches one of array)
+      currentIndex = currentImages.indexOf(imgEl.src);
+      if (currentIndex < 0) currentIndex = 0;
+      lightboxImg.src = currentImages[currentIndex];
+      lightbox.classList.add('active');
+    });
+  });
+
+  closeBtn.addEventListener('click', () => lightbox.classList.remove('active'));
+  nextBtn.addEventListener('click', () => {
+    if (!currentImages.length) return;
+    currentIndex = (currentIndex + 1) % currentImages.length;
+    lightboxImg.src = currentImages[currentIndex];
+  });
+  prevBtn.addEventListener('click', () => {
+    if (!currentImages.length) return;
+    currentIndex = (currentIndex - 1 + currentImages.length) % currentImages.length;
+    lightboxImg.src = currentImages[currentIndex];
+  });
+  lightbox.addEventListener('click', (e) => { if (e.target === lightbox) lightbox.classList.remove('active'); });
+  document.addEventListener('keydown', (e) => {
+    if (!lightbox.classList.contains('active')) return;
+    if (e.key === 'ArrowRight') nextBtn.click();
+    if (e.key === 'ArrowLeft') prevBtn.click();
+    if (e.key === 'Escape') closeBtn.click();
+  });
+</script>
+{% endblock %}

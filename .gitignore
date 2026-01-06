@@ -1,3 +1,4 @@
-images/
-products/
-t_design/
+/.envrender_env_vars.txt
+web/static/web/images/bgvideo.mp4
+web/static/web/images/
+/web/static/web

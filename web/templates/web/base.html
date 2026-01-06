@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>{% block title %}Premium Textile & Linen Supplier{% endblock %}</title>
+  <link rel="stylesheet" href="{% static 'web/css/style.css' %}" />
+</head>
+<body>
+  <nav class="navbar">
+    <div class="container">
+      <div class="nav-brand">
+        <a href="{% url 'index' %}">
+          <img src="{% static 'web/images/JC Logo.JPG' %}" class="logo" alt="JyotiCreation logo" />
+        </a>
+      </div>
+
+      <div class="nav-menu" id="navMenu">
+        <a href="{% url 'index' %}" class="nav-link {% if request.resolver_match.url_name == 'index' %}active{% endif %}">Home</a>
+        <a href="{% url 'about' %}" class="nav-link {% if request.resolver_match.url_name == 'about' %}active{% endif %}">About Us</a>
+
+        <div class="nav-dropdown">
+          <a href="{% url 'products' %}" class="nav-link {% if 'products' in request.path %}active{% endif %}">Products</a>
+          <div class="dropdown-content">
+            <a href="{% url 'table_linen' %}">Table Linen</a>
+            <a href="{% url 'chair_linen' %}">Chair Linen</a>
+            <a href="{% url 'napkins' %}">Napkins</a>
+            <a href="{% url 'bed_linen' %}">Bed Linen</a>
+            <a href="{% url 'bath_linen' %}">Bath Linen</a>
+            <a href="{% url 'premium_fabric' %}">Premium Fabrics</a>
+          </div>
+        </div>
+
+        <a href="{% url 'fabrics' %}" class="nav-link {% if request.resolver_match.url_name == 'fabrics' %}active{% endif %}">Fabric Design</a>
+        <a href="{% url 'contact' %}" class="nav-link {% if request.resolver_match.url_name == 'contact' %}active{% endif %}">Contact</a>
+      </div>
+
+      <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+  </nav>
+
+  <main>
+    {% block content %}
+    {% endblock %}
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-section">
+          <img src="{% static 'web/images/JC Logo.JPG' %}" class="logo" alt="JyotiCreation logo" /><br>
+          <p>Committed to excellence, Jyoti Creation delivers elegant, durable, and premium linens for every client seeking quality.</p>
+        
+        </div>
+
+        <div class="footer-section">
+         <div class="footer-section quick-links">
+          <h4>Quick Links</h4>
+          <ul>
+            <li><a href="{% url 'about' %}">About Us</a></li>
+            <li><a href="{% url 'products' %}">Products</a></li>
+            <li><a href="{% url 'fabrics' %}">Fabric Design</a></li>
+            <li><a href="{% url 'contact' %}">Contact</a></li>
+          </ul>
+         </div>
+        </div>
+
+        <div class="footer-section">
+          <h4>Contact Info</h4>
+          <p>📍 Jyoti Creation, 
+                B-19, Gala No. 6, 
+                Parashnath Complex, , 
+                Mankoli Road,  
+                Dapoda Road,  
+                Bhiwandi-421302 
+                Mumbai  (India)</p>
+          <p>📞 Krishna Agrawal | +91 98191 21053</p>
+          <p>✉️ sales@jyoticreation.co</p>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <p>&copy; 2024 JyotiCreation. All rights reserved. | Privacy Policy | Terms of Service</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="{% static 'web/js/script.js' %}"></script>
+  <script>
+    // Simple mobile nav toggle
+    (function () {
+      const navToggle = document.getElementById('navToggle');
+      const navMenu = document.getElementById('navMenu');
+
+      if (navToggle && navMenu) {
+          navToggle.addEventListener('click', () => {
+            navMenu.classList.toggle('active');
+            navToggle.classList.toggle('active');
+          });
+
+          // Close mobile menu when clicking a link (nice convenience)
+          document.querySelectorAll('.nav-menu a').forEach(a => {
+            a.addEventListener('click', () => {
+              if (navMenu.classList.contains('active')) {
+                navMenu.classList.remove('active');
+                navToggle.classList.remove('active');
+              }
+            });
+          });
+      }
+    })();
+  </script>
+</body>
+</html>

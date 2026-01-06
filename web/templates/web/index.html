@@ -1,0 +1,167 @@
+{% extends 'web/base.html' %}
+{% load static %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="hero">
+  <div class="hero-overlay">
+    <div class="hero-content">
+      <h1 class="tagline">Quality You Can Feel, Luxury You Can Trust</h1>
+      <p>For over a decade, Jyoti Creation has been the partner of choice for leading hotels and resorts. Our fabrics
+        blend luxury, durability, and timeless style.</p>
+      <a href="{% url 'products' %}" class="cta-button">Explore Products</a>
+    </div>
+  </div>
+</section>
+
+<!-- Featured Categories -->
+<section class="masonry-categories">
+  <div class="container">
+    <h2>Our Product Categories</h2>
+
+    <div class="masonry-grid">
+      <div class="masonry-item tall">
+        <img src="{% static 'web/images/tableLinen.jpeg' %}" alt="Table Linen">
+        <div class="overlay-center">
+          <a href="{% url 'table_linen' %}" class="overlay-label">
+            <h3>Table Linen</h3>
+          </a>
+        </div>
+      </div>
+
+      <div class="masonry-item tall">
+        <img src="{% static 'web/images/bedLinen.jpeg' %}" alt="Bed Linen">
+        <div class="overlay-center">
+          <a href="{% url 'bed_linen' %}" class="overlay-label">
+            <h3>Bed Linen</h3>
+          </a>
+        </div>
+      </div>
+
+      <div class="masonry-item">
+        <img src="{% static 'web/images/fabric.jpeg' %}" alt="Premium Fabrics">
+        <div class="overlay-center">
+          <a href="{% url 'premium_fabric' %}" class="overlay-label">
+            <h3>Premium Fabrics</h3>
+          </a>
+        </div>
+      </div>
+
+      <div class="masonry-item tall">
+        <img src="{% static 'web/images/bathLinen.jpeg' %}" alt="Bath Linen">
+        <div class="overlay-center">
+          <a href="{% url 'bath_linen' %}" class="overlay-label">
+            <h3>Bath Linen</h3>
+          </a>
+        </div>
+      </div>
+
+      <div class="masonry-item">
+        <img src="{% static 'web/images/ChairLinen.jpeg' %}" alt="Chair Linen">
+        <div class="overlay-center">
+          <a href="{% url 'chair_linen' %}" class="overlay-label">
+            <h3>Chair Linen</h3>
+          </a>
+        </div>
+      </div>
+
+      <div class="masonry-item">
+        <img src="{% static 'web/images/napkins.jpeg' %}" alt="Napkins">
+        <div class="overlay-center">
+          <a href="{% url 'napkins' %}" class="overlay-label">
+            <h3>Napkins</h3>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Company Introduction -->
+<!-- Parallax Section with Video -->
+<section class="parallax-section">
+  <video autoplay muted loop class="parallax-video">
+    <source src="{% static 'web/images/bgvideo.mp4' %}" type="video/mp4">
+    Your browser does not support the video tag.
+  </video>
+
+  <div class="parallax-content">
+    <h2>Where Luxury Meets Comfort in Premium Textiles</h2>
+    <p>Since 2013, Jyoti Creation has been a trusted partner for premium linen and fabric solutions. We specialize in
+      high-quality linens for luxury hotels, resorts, and hospitality brands, offering elegance, durability, and
+      custom-made designs.</p>
+    <a href="{% url 'about' %}" class="secondary-button">Learn More About Us</a>
+  </div>
+</section>
+
+<style>
+  .parallax-section {
+    position: relative;
+    height: 600px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    overflow: hidden;
+    color: #fff;
+  }
+
+  .parallax-video {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: -1;
+    filter: brightness(0.5);
+    /* darkens video for better text readability */
+  }
+
+  .parallax-content {
+    position: relative;
+    max-width: 800px;
+    padding: 0 20px;
+  }
+
+  .parallax-content h2 {
+    font-size: 48px;
+    margin-bottom: 20px;
+    text-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+  }
+
+  .parallax-content p {
+    font-size: 20px;
+    margin-bottom: 30px;
+    line-height: 1.5;
+    text-shadow: 0 3px 10px rgba(0, 0, 0, 0.4);
+  }
+
+  .secondary-button {
+    display: inline-block;
+    padding: 12px 30px;
+    background: #f1c40f;
+    color: #fff;
+    border-radius: 25px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: 0.3s;
+  }
+
+  .secondary-button:hover {
+    background: #fff;
+    color: #f1c40f;
+  }
+
+  /* Responsive */
+  @media(max-width: 768px) {
+    .parallax-content h2 {
+      font-size: 32px;
+    }
+
+    .parallax-content p {
+      font-size: 16px;
+    }
+  }
+</style>
+{% endblock %}

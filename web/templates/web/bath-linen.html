@@ -1,0 +1,98 @@
+{% extends 'web/base.html' %}
+{% load static %}
+
+{% block content %}
+{% block title %}Bath Linen{% endblock %}
+
+<!-- NAVBAR -->
+  
+
+  <!-- BREADCRUMB (kept as you had it) -->
+  <div class="breadcrumb-wrapper">
+    <div class="breadcrumb">
+      <a href="{% url 'index' %}">Home</a> &gt; 
+      <a href="{% url 'products' %}">Products</a> &gt; 
+      <span>Bath Linen</span>
+    </div>
+  </div>
+
+  <!-- MAIN CONTENT -->
+  <main class="page-content">
+    <div class="page-header">
+      <h1>Bath Linen Collection</h1>
+    </div>
+
+    <div class="product-grid">
+      <!-- sample cards -->
+      <div class="product-card" data-images='["{% static 'web/products/bl.jpeg' %}"]'>
+        <img src="{% static 'web/products/bl.jpeg' %}" alt="Bath Robes">
+        <div class="product-info"> <h3>Bath Robes</h3></div>
+      </div>
+
+  </main>
+
+  <!-- LIGHTBOX -->
+  <div class="lightbox" id="lightbox">
+    <span class="close" id="lightboxClose">&times;</span>
+    <span class="prev" id="lightboxPrev">&#10094;</span>
+    <img id="lightboxImg" src="" alt="Product image">
+    <span class="next" id="lightboxNext">&#10095;</span>
+  </div>
+
+
+  <script>
+    // LIGHTBOX JS (same logic as before but opens clicked image index)
+    const cards = document.querySelectorAll('.product-card');
+    const lightbox = document.getElementById('lightbox');
+    const lightboxImg = document.getElementById('lightboxImg');
+    const closeBtn = document.getElementById('lightboxClose');
+    const nextBtn = document.getElementById('lightboxNext');
+    const prevBtn = document.getElementById('lightboxPrev');
+
+    let currentImages = [];
+    let currentIndex = 0;
+
+    cards.forEach(card => {
+      const images = JSON.parse(card.getAttribute('data-images') || '[]');
+      // hide arrow if only one image
+      if (images.length <= 1) {
+        const arrow = card.querySelector('.arrow-indicator');
+        if (arrow) arrow.style.display = 'none';
+      }
+      const imgEl = card.querySelector('img');
+      // open lightbox with clicked image (if card has multiple images and you want to open the exact one,
+      // we could also detect which thumbnail was clicked; here we open the main image used in card)
+      imgEl.addEventListener('click', (e) => {
+        currentImages = images.length ? images : [imgEl.src];
+        // find index of clicked src inside currentImages (if main card src matches one of array)
+        currentIndex = currentImages.indexOf(imgEl.src);
+        if (currentIndex < 0) currentIndex = 0;
+        lightboxImg.src = currentImages[currentIndex];
+        lightbox.classList.add('active');
+      });
+    });
+
+    closeBtn.addEventListener('click', () => lightbox.classList.remove('active'));
+    nextBtn.addEventListener('click', () => {
+      if (!currentImages.length) return;
+      currentIndex = (currentIndex + 1) % currentImages.length;
+      lightboxImg.src = currentImages[currentIndex];
+    });
+    prevBtn.addEventListener('click', () => {
+      if (!currentImages.length) return;
+      currentIndex = (currentIndex - 1 + currentImages.length) % currentImages.length;
+      lightboxImg.src = currentImages[currentIndex];
+    });
+    lightbox.addEventListener('click', (e) => { if (e.target === lightbox) lightbox.classList.remove('active'); });
+    document.addEventListener('keydown', (e) => {
+      if (!lightbox.classList.contains('active')) return;
+      if (e.key === 'ArrowRight') nextBtn.click();
+      if (e.key === 'ArrowLeft') prevBtn.click();
+      if (e.key === 'Escape') closeBtn.click();
+    });
+  </script>
+
+   
+
+    <script src="script.js"></script>
+{% endblock %}
