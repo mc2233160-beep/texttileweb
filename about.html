@@ -31,15 +31,14 @@
                 <a href="fabrics.html" class="nav-link">Fabric Design</a>
                 <a href="contact.html" class="nav-link">Contact</a>
             </div>
-            <div class="nav-toggle" id="navToggle">
+            <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation">
                 <span></span>
                 <span></span>
                 <span></span>
-            </div>
+            </button>
         </div>
     </nav>
 
-    <title>About Us - Jyoti Creation</title>
   <style>
     /* General Styles */
     body {
@@ -205,17 +204,91 @@
         flex: 1 1 100%;
       }
 
+      .hero {
+        padding: 100px 20px 40px;
+      }
+
       .hero h1 {
-        font-size: 36px;
+        font-size: 32px;
       }
 
       .hero p {
+        font-size: 16px;
+      }
+
+      .about-section {
+        padding: 40px 0;
+      }
+
+      .about-section h2 {
+        font-size: 24px;
+      }
+
+      .highlights {
+        padding: 40px 20px;
+      }
+
+      .highlight-item h3 {
+        font-size: 20px;
+      }
+    }
+
+    @media(max-width: 480px) {
+      .hero {
+        padding: 80px 15px 30px;
+      }
+
+      .hero h1 {
+        font-size: 24px;
+      }
+
+      .hero p {
+        font-size: 14px;
+      }
+
+      .about-section {
+        padding: 30px 0;
+      }
+
+      .about-section h2 {
+        font-size: 20px;
+        margin-bottom: 20px;
+      }
+
+      .about-text {
+        text-align: left;
+        font-size: 0.9rem;
+      }
+
+      .highlights {
+        padding: 30px 15px;
+      }
+
+      .highlight-item {
+        margin-bottom: 20px;
+      }
+
+      .highlight-item h3 {
         font-size: 18px;
+      }
+
+      .highlight-item p {
+        font-size: 0.9rem;
+      }
+
+      .clients {
+        padding: 40px 15px;
+      }
+
+      .client-logos {
+        gap: 20px;
+      }
+
+      .client-logos img {
+        height: 50px;
       }
     }
   </style>
-</head>
-<body>
 
   <!-- Hero Section -->
   <section class="hero">
@@ -262,8 +335,7 @@
     </div>
   </section>
 
-  </section>
-     <footer class="footer">
+  <footer class="footer">
     <div class="container">
       <div class="footer-content">
         <div class="footer-section">
@@ -303,6 +375,6 @@
     </div>
   </footer>
 
-    <script src="script.js"></script>
+    <script src="script.js" defer></script>
 </body>
 </html>

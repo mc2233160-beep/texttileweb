@@ -4,14 +4,24 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Premium Textile & Linen Supplier</title>
+  
+  <!-- Performance Optimizations -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="dns-prefetch" href="https://fonts.googleapis.com" />
+  <link rel="preload" href="style.css" as="style" />
+  <link rel="preload" href="images/JC Logo.JPG" as="image" />
   <link rel="stylesheet" href="style.css" />
+  
+  <!-- Prefetch next likely pages -->
+  <link rel="prefetch" href="products.html" />
+  <link rel="prefetch" href="about.html" />
 </head>
 <body>
   <nav class="navbar">
     <div class="container">
       <div class="nav-brand">
         <a href="index.html">
-          <img src="images/JC Logo.JPG" class="logo" alt="JyotiCreation logo" />
+          <img src="images/JC Logo.JPG" class="logo" alt="JyotiCreation logo" width="120" height="48" loading="eager" />
         </a>
       </div>
 
@@ -62,42 +72,42 @@
 
         <div class="masonry-grid">
           <div class="masonry-item tall">
-            <img src="images/tableLinen.jpeg" alt="Table Linen">
+            <img src="images/tableLinen.jpeg" alt="Table Linen" loading="lazy" width="400" height="600">
             <div class="overlay-center">
               <a href="table-linen.html" class="overlay-label"><h3>Table Linen</h3></a>
             </div>
           </div>
 
           <div class="masonry-item tall">
-            <img src="images/bedLinen.jpeg" alt="Bed Linen">
+            <img src="images/bedLinen.jpeg" alt="Bed Linen" loading="lazy" width="400" height="600">
             <div class="overlay-center">
               <a href="bed-linen.html" class="overlay-label"><h3>Bed Linen</h3></a>
             </div>
           </div>
 
           <div class="masonry-item">
-            <img src="images/fabric.jpeg" alt="Premium Fabrics">
+            <img src="images/fabric.jpeg" alt="Premium Fabrics" loading="lazy" width="400" height="400">
             <div class="overlay-center">
               <a href="premium-fabric.html" class="overlay-label"><h3>Premium Fabrics</h3></a>
             </div>
           </div>
 
           <div class="masonry-item tall">
-            <img src="images/bathLinen.jpeg" alt="Bath Linen">
+            <img src="images/bathLinen.jpeg" alt="Bath Linen" loading="lazy" width="400" height="600">
             <div class="overlay-center">
               <a href="bath-linen.html" class="overlay-label"><h3>Bath Linen</h3></a>
             </div>
           </div>
 
           <div class="masonry-item">
-            <img src="images/ChairLinen.jpeg" alt="Chair Linen">
+            <img src="images/ChairLinen.jpeg" alt="Chair Linen" loading="lazy" width="400" height="400">
             <div class="overlay-center">
               <a href="chair-linen.html" class="overlay-label"><h3>Chair Linen</h3></a>
             </div>
           </div>
 
           <div class="masonry-item">
-            <img src="images/napkins.jpeg" alt="Napkins">
+            <img src="images/napkins.jpeg" alt="Napkins" loading="lazy" width="400" height="400">
             <div class="overlay-center">
               <a href="napkins.html" class="overlay-label"><h3>Napkins</h3></a>
             </div>
@@ -109,7 +119,7 @@
 <!-- Company Introduction -->
 <!-- Parallax Section with Video -->
 <section class="parallax-section">
-  <video autoplay muted loop class="parallax-video">
+  <video autoplay muted loop playsinline class="parallax-video" preload="metadata" poster="images/bg.jpeg">
     <source src="images/bgvideo.mp4" type="video/mp4">
     Your browser does not support the video tag.
   </video>
@@ -179,8 +189,18 @@
 
 /* Responsive */
 @media(max-width: 768px){
-  .parallax-content h2 { font-size: 32px; }
-  .parallax-content p { font-size: 16px; }
+  .parallax-section { height: 500px; }
+  .parallax-content { padding: 0 20px; }
+  .parallax-content h2 { font-size: 28px; margin-bottom: 15px; }
+  .parallax-content p { font-size: 16px; margin-bottom: 20px; }
+}
+
+@media(max-width: 480px){
+  .parallax-section { height: 400px; }
+  .parallax-content { padding: 0 15px; }
+  .parallax-content h2 { font-size: 22px; margin-bottom: 12px; }
+  .parallax-content p { font-size: 14px; margin-bottom: 18px; }
+  .secondary-button { padding: 10px 20px; font-size: 0.9rem; }
 }
 </style>
 
@@ -190,7 +210,7 @@
     <div class="container">
       <div class="footer-content">
         <div class="footer-section">
-          <img src="images/JC Logo.JPG" class="logo" alt="JyotiCreation logo" /><br>
+          <img src="images/JC Logo.JPG" class="logo" alt="JyotiCreation logo" width="120" height="48" loading="lazy" /><br>
           <p>Committed to excellence, Jyoti Creation delivers elegant, durable, and premium linens for every client seeking quality.</p>
         
         </div>
@@ -227,26 +247,29 @@
     </div>
   </footer>
 
+  <script src="script.js" defer></script>
   <script>
-    // Simple mobile nav toggle
+    // Simple mobile nav toggle (inline for immediate functionality)
     (function () {
       const navToggle = document.getElementById('navToggle');
       const navMenu = document.getElementById('navMenu');
 
-      navToggle.addEventListener('click', () => {
-        navMenu.classList.toggle('active');
-        navToggle.classList.toggle('active');
-      });
-
-      // Close mobile menu when clicking a link (nice convenience)
-      document.querySelectorAll('.nav-menu a').forEach(a => {
-        a.addEventListener('click', () => {
-          if (navMenu.classList.contains('active')) {
-            navMenu.classList.remove('active');
-            navToggle.classList.remove('active');
-          }
+      if (navToggle && navMenu) {
+        navToggle.addEventListener('click', () => {
+          navMenu.classList.toggle('active');
+          navToggle.classList.toggle('active');
         });
-      });
+
+        // Close mobile menu when clicking a link (nice convenience)
+        document.querySelectorAll('.nav-menu a').forEach(a => {
+          a.addEventListener('click', () => {
+            if (navMenu.classList.contains('active')) {
+              navMenu.classList.remove('active');
+              navToggle.classList.remove('active');
+            }
+          });
+        });
+      }
     })();
   </script>
 </body>

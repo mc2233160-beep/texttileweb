@@ -15,11 +15,12 @@
             setupEventListeners();
             setupNavigation();
             handleProductPage();
+            setupFormHandlers();
+            setupPageTransitions();
         } catch (error) {
             console.error('Initialization error:', error);
         }
-
-    };
+    });
 
     /**
      * Initialize DOM elements
@@ -284,12 +285,12 @@
             'green': 'https://images.pexels.com/photos/271897/pexels-photo-271897.jpeg?auto=compress&cs=tinysrgb&w=600'
         };
 
-        if (colorImages[color] && mainImage) {
+        if (colorImages[color] && domElements.mainImage) {
             // Apply a quick fade transition for a smoother color change effect
-            mainImage.style.opacity = '0';
+            domElements.mainImage.style.opacity = '0';
             setTimeout(() => {
-                mainImage.src = colorImages[color];
-                mainImage.style.opacity = '1';
+                domElements.mainImage.src = colorImages[color];
+                domElements.mainImage.style.opacity = '1';
             }, 150);
         }
     }
@@ -314,24 +315,95 @@
     }
 
 
-    // --- Form Handling ---
-    
-    // Enquiry Form
-    const enquiryForm = document.getElementById('enquiryForm');
-    if (enquiryForm) {
-        enquiryForm.addEventListener('submit', function(e) {
-            e.preventDefault();
-            handleFormSubmission(this, 'enquiry');
+    /**
+     * Set up page transitions for smoother navigation
+     */
+    function setupPageTransitions() {
+        // Create transition overlay if it doesn't exist
+        let transitionOverlay = document.getElementById('page-transition');
+        let loadingSpinner = document.getElementById('loading-spinner');
+        
+        if (!transitionOverlay) {
+            transitionOverlay = document.createElement('div');
+            transitionOverlay.id = 'page-transition';
+            transitionOverlay.className = 'page-transition';
+            document.body.appendChild(transitionOverlay);
+        }
+        
+        if (!loadingSpinner) {
+            loadingSpinner = document.createElement('div');
+            loadingSpinner.id = 'loading-spinner';
+            loadingSpinner.className = 'loading-spinner';
+            document.body.appendChild(loadingSpinner);
+        }
+
+        // Intercept all internal link clicks
+        document.addEventListener('click', function(e) {
+            const link = e.target.closest('a[href]');
+            if (!link) return;
+            
+            const href = link.getAttribute('href');
+            // Only handle internal links (same domain)
+            if (href && 
+                !href.startsWith('#') && 
+                !href.startsWith('mailto:') && 
+                !href.startsWith('tel:') &&
+                !href.startsWith('http') &&
+                href.endsWith('.html')) {
+                
+                e.preventDefault();
+                
+                // Show transition
+                transitionOverlay.classList.add('active');
+                loadingSpinner.classList.add('active');
+                
+                // Prefetch the page
+                const linkElement = document.createElement('link');
+                linkElement.rel = 'prefetch';
+                linkElement.href = href;
+                document.head.appendChild(linkElement);
+                
+                // Navigate after a brief delay for smooth transition
+                setTimeout(() => {
+                    window.location.href = href;
+                }, 150);
+            }
         });
+
+        // Hide transition when page loads
+        window.addEventListener('load', function() {
+            transitionOverlay.classList.remove('active');
+            loadingSpinner.classList.remove('active');
+        });
+
+        // Also hide on DOMContentLoaded for faster pages
+        setTimeout(() => {
+            transitionOverlay.classList.remove('active');
+            loadingSpinner.classList.remove('active');
+        }, 100);
     }
 
-    // Contact Form
-    const contactForm = document.getElementById('contactForm');
-    if (contactForm) {
-        contactForm.addEventListener('submit', function(e) {
-            e.preventDefault();
-            handleFormSubmission(this, 'contact');
-        });
+    /**
+     * Set up form handlers
+     */
+    function setupFormHandlers() {
+        // Enquiry Form
+        const enquiryForm = document.getElementById('enquiryForm');
+        if (enquiryForm) {
+            enquiryForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                handleFormSubmission(this, 'enquiry');
+            });
+        }
+
+        // Contact Form
+        const contactForm = document.getElementById('contactForm');
+        if (contactForm) {
+            contactForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                handleFormSubmission(this, 'contact');
+            });
+        }
     }
 
     function handleFormSubmission(form, type) {

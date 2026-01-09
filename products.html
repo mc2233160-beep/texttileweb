@@ -4,14 +4,22 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Products - TextilePro</title>
+  
+  <!-- Performance Optimizations -->
+  <link rel="preload" href="style.css" as="style" />
+  <link rel="preload" href="images/JC Logo.JPG" as="image" />
   <link rel="stylesheet" href="style.css">
+  
+  <!-- Prefetch likely next pages -->
+  <link rel="prefetch" href="table-linen.html" />
+  <link rel="prefetch" href="contact.html" />
 </head>
 <body>
   <nav class="navbar">
     <div class="container">
       <div class="nav-brand">
         <a href="index.html">
-          <img src="images/JC Logo.JPG" class="logo" alt="JyotiCreation logo" />
+          <img src="images/JC Logo.JPG" class="logo" alt="JyotiCreation logo" width="120" height="48" loading="eager" />
         </a>
       </div>
       <div class="nav-menu" id="navMenu">
@@ -31,11 +39,11 @@
         <a href="fabrics.html" class="nav-link">Fabric Design</a>
         <a href="contact.html" class="nav-link">Contact</a>
       </div>
-      <div class="nav-toggle" id="navToggle">
+      <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation">
         <span></span>
         <span></span>
         <span></span>
-      </div>
+      </button>
     </div>
   </nav>
 
@@ -52,7 +60,7 @@
         <div class="product-card">
           <div class="card-inner">
             <div class="card-front">
-              <img src="images/tableLinen.jpeg" alt="Table Linen">
+              <img src="images/tableLinen.jpeg" alt="Table Linen" loading="lazy" width="400" height="350">
             </div>
             <div class="card-back">
               <h3>Table Linen</h3>
@@ -72,7 +80,7 @@
         <div class="product-card">
           <div class="card-inner">
             <div class="card-front">
-              <img src="images/ChairLinen.jpeg" alt="Chair Linen">
+              <img src="images/ChairLinen.jpeg" alt="Chair Linen" loading="lazy" width="400" height="350">
             </div>
             <div class="card-back">
               <h3>Chair Linen</h3>
@@ -91,7 +99,7 @@
         <div class="product-card">
           <div class="card-inner">
             <div class="card-front">
-              <img src="images/Napkins.jpeg" alt="Napkins">
+              <img src="images/Napkins.jpeg" alt="Napkins" loading="lazy" width="400" height="350">
             </div>
             <div class="card-back">
               <h3>Napkins</h3>
@@ -110,7 +118,7 @@
         <div class="product-card">
           <div class="card-inner">
             <div class="card-front">
-              <img src="images/bedLinen.jpeg" alt="Bed Linen">
+              <img src="images/bedLinen.jpeg" alt="Bed Linen" loading="lazy" width="400" height="350">
             </div>
             <div class="card-back">
               <h3>Bed Linen</h3>
@@ -130,7 +138,7 @@
         <div class="product-card">
           <div class="card-inner">
             <div class="card-front">
-              <img src="images/bathLinen.jpeg" alt="Bath Linen">
+              <img src="images/bathLinen.jpeg" alt="Bath Linen" loading="lazy" width="400" height="350">
             </div>
             <div class="card-back">
               <h3>Bath Linen</h3>
@@ -148,7 +156,7 @@
         <div class="product-card">
           <div class="card-inner">
             <div class="card-front">
-              <img src="images/fabric.jpeg" alt="Premium Fabrics">
+              <img src="images/fabric.jpeg" alt="Premium Fabrics" loading="lazy" width="400" height="350">
             </div>
             <div class="card-back">
               <h3>Premium Fabrics</h3>
@@ -170,7 +178,7 @@
     <div class="container">
       <div class="footer-content">
         <div class="footer-section">
-          <img src="images/JC Logo.JPG" class="logo" alt="JyotiCreation logo" /><br>
+          <img src="images/JC Logo.JPG" class="logo" alt="JyotiCreation logo" width="120" height="48" loading="lazy" /><br>
           <p>Committed to excellence, Jyoti Creation delivers elegant, durable, and premium linens for every client seeking quality.</p>
         </div>
 
@@ -205,6 +213,6 @@
     </div>
   </footer>
 
-  <script src="script.js"></script>
+  <script src="script.js" defer></script>
 </body>
 </html>
