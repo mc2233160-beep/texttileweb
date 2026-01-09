@@ -1,0 +1,304 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Contact Us - Jyoti Creation{% endblock %}
+
+{% block content %}
+<main class="page-content">
+    <div class="container">
+        <div class="page-header">
+            <h1>Contact Us</h1>
+            <p>Get in touch with our team for quotes, inquiries, and custom solutions</p>
+        </div>
+
+        <div class="contact-content">
+            <div class="contact-form-section">
+                <h2>Send us a Message</h2>
+                <form id="contactForm" class="contact-form" action="{% url 'contact' %}" method="POST">
+                    {% csrf_token %}
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="contactName">Full Name *</label>
+                            <input type="text" id="contactName" name="name" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="contactEmail">Email Address *</label>
+                            <input type="email" id="contactEmail" name="email" required>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="contactPhone">Phone Number</label>
+                            <input type="tel" id="contactPhone" name="phone">
+                        </div>
+                        <div class="form-group">
+                            <label for="contactCompany">Company Name</label>
+                            <input type="text" id="contactCompany" name="company">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="subject">Subject</label>
+                        <select id="subject" name="subject">
+                            <option value="">Select a subject</option>
+                            <option value="quote">Request Quote</option>
+                            <option value="product-info">Product Information</option>
+                            <option value="custom-order">Custom Order</option>
+                            <option value="support">Customer Support</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="contactMessage">Message *</label>
+                        <textarea id="contactMessage" name="message" rows="6" required
+                            placeholder="Please provide details about your requirements, including quantity, timeline, and any special specifications..."></textarea>
+                    </div>
+                    <button type="submit" class="submit-btn">Send Message</button>
+                </form>
+            </div>
+
+            <div class="contact-info-section">
+                <h2>Get in Touch</h2>
+                <div class="contact-details">
+                    <div class="contact-item">
+                        <h3>📍 Address</h3>
+                        <p>Jyoti Creation,<br>B-19, Gala No. 6, <br>Parashnath Complex,<br>Mankoli Road, Dapoda
+                            Road,<br>Bhiwandi City-421302 (India)</p>
+                    </div>
+                    <div class="contact-item">
+                        <h3>📞 Phone</h3>
+                        <p> Krishna Agrawal: +91 98191 21053 </p>
+                    </div>
+                    <!--<div class="contact-item">
+                            <h3>✉ Email</h3>
+                            <p>General: info@textilepro.com<br>Sales: sales@textilepro.com<br>Support: support@textilepro.com</p>
+                        </div>-->
+                    <div class="contact-item">
+                        <h3>⏰ Business Hours</h3>
+                        <p>Monday - Saturday: 8:00 AM - 9:00 PM<br>Sunday: Closed</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="map-section">
+            <h2>Visit Our Facility</h2>
+            <div class="map-container">
+                <iframe
+                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d28643.63369838484!2d73.02610943077833!3d19.246064149224967!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3be7bd004f989a0d%3A0xa22b44ba830a9127!2sParashnath%20complex%20Anjur%20dapoda%20road%20Bhiwandi!5e1!3m2!1sen!2sin!4v1759642692218!5m2!1sen!2sin"
+                    width="100%" height="400" style="border:0;" allowfullscreen="" loading="lazy"
+                    referrerpolicy="no-referrer-when-downgrade">
+                </iframe>
+            </div>
+            <div class="map-info">
+                <p></p>
+            </div>
+        </div>
+    </div>
+</main>
+<style>
+    /* --- General Page Styles --- */
+    .page-content {
+        padding: 60px 20px;
+        background: #f9f9f9;
+        font-family: Arial, sans-serif;
+    }
+
+    .page-header {
+        text-align: center;
+        margin-bottom: 40px;
+    }
+
+    .page-header h1 {
+        font-size: 2.2rem;
+        margin-bottom: 10px;
+        color: #004080;
+    }
+
+    .page-header p {
+        font-size: 1rem;
+        color: #555;
+    }
+
+    /* --- Contact Content Layout --- */
+    .contact-content {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 30px;
+        margin-bottom: 50px;
+    }
+
+    /* Contact Form Section */
+    .contact-form-section {
+        flex: 1 1 60%;
+        background: #fff;
+        padding: 25px;
+        border-radius: 8px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+    }
+
+    .contact-form-section h2 {
+        margin-bottom: 20px;
+        color: #222;
+    }
+
+    .contact-form {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+    }
+
+    .form-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 20px;
+    }
+
+    .form-group {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .form-group label {
+        font-weight: bold;
+        margin-bottom: 6px;
+        color: #444;
+    }
+
+    .form-group .required {
+        color: red;
+        font-weight: normal;
+    }
+
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 6px;
+        font-size: 0.95rem;
+        transition: border-color 0.3s;
+    }
+
+    .form-group input:focus,
+    .form-group select:focus,
+    .form-group textarea:focus {
+        border-color: #0077cc;
+        outline: none;
+    }
+
+    /* Submit Button */
+    .submit-btn {
+        background: #0077cc;
+        color: #fff;
+        padding: 12px 20px;
+        font-size: 1rem;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+        transition: background 0.3s;
+    }
+
+    .submit-btn:hover {
+        background: #005fa3;
+    }
+
+    /* --- Contact Info Section --- */
+    .contact-info-section {
+        flex: 1 1 35%;
+        background: #fff;
+        padding: 25px;
+        border-radius: 8px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+    }
+
+    .contact-info-section h2 {
+        text-align: center;
+        font-size: 1.6rem;
+        margin-bottom: 20px;
+        color: #222;
+    }
+
+    .contact-item {
+        text-align: center;
+        margin-bottom: 20px;
+    }
+
+    .contact-item h3 {
+        text-align: center;
+        margin-bottom: 8px;
+        font-size: 1.1rem;
+        color: #0077cc;
+    }
+
+    .contact-item p {
+        text-align: center;
+        color: #555;
+        line-height: 1.5;
+    }
+
+    /* Quick Contact */
+    .quick-contact h3 {
+        margin-bottom: 12px;
+        color: #222;
+    }
+
+    .quick-buttons {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+    }
+
+    .quick-btn {
+        display: inline-block;
+        background: #0077cc;
+        color: #fff;
+        padding: 10px 15px;
+        border-radius: 6px;
+        text-decoration: none;
+        font-size: 0.9rem;
+        transition: background 0.3s;
+    }
+
+    .quick-btn:hover {
+        background: #005fa3;
+    }
+
+    /* --- Map Section --- */
+    .map-section {
+        text-align: center;
+    }
+
+    .map-section h2 {
+        margin-bottom: 20px;
+        color: #222;
+    }
+
+    .map-container {
+        border-radius: 8px;
+        overflow: hidden;
+        margin-bottom: 15px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+    }
+
+    .map-info {
+        max-width: 800px;
+        margin: 0 auto;
+        color: #555;
+        font-size: 0.95rem;
+    }
+
+    /* --- Responsive Design --- */
+    @media (max-width: 900px) {
+        .contact-content {
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        .contact-form-section,
+        .contact-info-section {
+            flex: 1 1 100%;
+        }
+    }
+</style>
+{% endblock %}

@@ -13,7 +13,7 @@ env/
 .venv/
 
 # Django Static
-staticfiles/
+static
 dist/
 
 # Editor directories
