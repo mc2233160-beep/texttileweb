@@ -13,7 +13,6 @@ env/
 .venv/
 
 # Django Static
-static/images/bgvideo.mp4
 dist/
 
 # Editor directories
