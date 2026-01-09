@@ -6,6 +6,10 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>{% block title %}Premium Textile & Linen Supplier{% endblock %}</title>
+  
+  <!-- Performance: Preload critical resources -->
+  <link rel="preload" href="{% static 'css/style.css' %}" as="style" />
+  <link rel="preload" href="{% static 'images/JC Logo.JPG' %}" as="image" />
   <link rel="stylesheet" href="{% static 'css/style.css' %}" />
 </head>
 
@@ -14,7 +18,7 @@
     <div class="container">
       <div class="nav-brand">
         <a href="{% url 'index' %}">
-          <img src="{% static 'images/JC Logo.JPG' %}" class="logo" alt="JyotiCreation logo" />
+          <img src="{% static 'images/JC Logo.JPG' %}" class="logo" alt="JyotiCreation logo" width="120" height="48" loading="eager" />
         </a>
       </div>
 
@@ -60,7 +64,7 @@
     <div class="container">
       <div class="footer-content">
         <div class="footer-section">
-          <img src="{% static 'images/JC Logo.JPG' %}" class="logo" alt="JyotiCreation logo" /><br>
+          <img src="{% static 'images/JC Logo.JPG' %}" class="logo" alt="JyotiCreation logo" width="120" height="48" loading="lazy" /><br>
           <p>Committed to excellence, Jyoti Creation delivers elegant, durable, and premium linens for every client
             seeking quality.</p>
 
@@ -98,27 +102,57 @@
     </div>
   </footer>
 
-  <script src="{% static 'js/script.js' %}"></script>
+  <script src="{% static 'js/script.js' %}" defer></script>
   <script>
     // Simple mobile nav toggle
     (function () {
       const navToggle = document.getElementById('navToggle');
       const navMenu = document.getElementById('navMenu');
+      const body = document.body;
 
       if (navToggle && navMenu) {
-        navToggle.addEventListener('click', () => {
+        navToggle.addEventListener('click', (e) => {
+          e.stopPropagation();
           navMenu.classList.toggle('active');
           navToggle.classList.toggle('active');
+          
+          // Prevent body scroll when menu is open
+          if (navMenu.classList.contains('active')) {
+            body.style.overflow = 'hidden';
+          } else {
+            body.style.overflow = '';
+          }
         });
 
-        // Close mobile menu when clicking a link (nice convenience)
+        // Close mobile menu when clicking outside
+        document.addEventListener('click', (e) => {
+          if (navMenu.classList.contains('active') && 
+              !navMenu.contains(e.target) && 
+              !navToggle.contains(e.target)) {
+            navMenu.classList.remove('active');
+            navToggle.classList.remove('active');
+            body.style.overflow = '';
+          }
+        });
+
+        // Close mobile menu when clicking a link
         document.querySelectorAll('.nav-menu a').forEach(a => {
           a.addEventListener('click', () => {
             if (navMenu.classList.contains('active')) {
               navMenu.classList.remove('active');
               navToggle.classList.remove('active');
+              body.style.overflow = '';
             }
           });
+        });
+
+        // Close menu on window resize if it becomes desktop size
+        window.addEventListener('resize', () => {
+          if (window.innerWidth > 768 && navMenu.classList.contains('active')) {
+            navMenu.classList.remove('active');
+            navToggle.classList.remove('active');
+            body.style.overflow = '';
+          }
         });
       }
     })();

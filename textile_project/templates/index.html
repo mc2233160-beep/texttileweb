@@ -21,7 +21,7 @@
 
     <div class="masonry-grid">
       <div class="masonry-item tall">
-        <img src="{% static 'images/tableLinen.jpeg' %}" alt="Table Linen">
+        <img src="{% static 'images/tableLinen.jpeg' %}" alt="Table Linen" loading="lazy" width="400" height="600">
         <div class="overlay-center">
           <a href="{% url 'table_linen' %}" class="overlay-label">
             <h3>Table Linen</h3>
@@ -30,7 +30,7 @@
       </div>
 
       <div class="masonry-item tall">
-        <img src="{% static 'images/bedLinen.jpeg' %}" alt="Bed Linen">
+        <img src="{% static 'images/bedLinen.jpeg' %}" alt="Bed Linen" loading="lazy" width="400" height="600">
         <div class="overlay-center">
           <a href="{% url 'bed_linen' %}" class="overlay-label">
             <h3>Bed Linen</h3>
@@ -39,7 +39,7 @@
       </div>
 
       <div class="masonry-item">
-        <img src="{% static 'images/fabric.jpeg' %}" alt="Premium Fabrics">
+        <img src="{% static 'images/fabric.jpeg' %}" alt="Premium Fabrics" loading="lazy" width="400" height="400">
         <div class="overlay-center">
           <a href="{% url 'premium_fabric' %}" class="overlay-label">
             <h3>Premium Fabrics</h3>
@@ -48,7 +48,7 @@
       </div>
 
       <div class="masonry-item tall">
-        <img src="{% static 'images/bathLinen.jpeg' %}" alt="Bath Linen">
+        <img src="{% static 'images/bathLinen.jpeg' %}" alt="Bath Linen" loading="lazy" width="400" height="600">
         <div class="overlay-center">
           <a href="{% url 'bath_linen' %}" class="overlay-label">
             <h3>Bath Linen</h3>
@@ -57,7 +57,7 @@
       </div>
 
       <div class="masonry-item">
-        <img src="{% static 'images/ChairLinen.jpeg' %}" alt="Chair Linen">
+        <img src="{% static 'images/ChairLinen.jpeg' %}" alt="Chair Linen" loading="lazy" width="400" height="400">
         <div class="overlay-center">
           <a href="{% url 'chair_linen' %}" class="overlay-label">
             <h3>Chair Linen</h3>
@@ -66,7 +66,7 @@
       </div>
 
       <div class="masonry-item">
-        <img src="{% static 'images/Napkins.jpeg' %}" alt="Napkins">
+        <img src="{% static 'images/Napkins.jpeg' %}" alt="Napkins" loading="lazy" width="400" height="400">
         <div class="overlay-center">
           <a href="{% url 'napkins' %}" class="overlay-label">
             <h3>Napkins</h3>
@@ -80,7 +80,7 @@
 <!-- Company Introduction -->
 <!-- Parallax Section with Video -->
 <section class="parallax-section">
-  <video autoplay muted loop class="parallax-video">
+  <video autoplay muted loop playsinline class="parallax-video" preload="metadata" poster="{% static 'images/bg.jpeg' %}">
     <source src="{% static 'images/bgvideo.mp4' %}" type="video/mp4">
     Your browser does not support the video tag.
   </video>
@@ -155,12 +155,47 @@
 
   /* Responsive */
   @media(max-width: 768px) {
+    .parallax-section {
+      height: 500px;
+    }
+
+    .parallax-content {
+      padding: 0 20px;
+    }
+
     .parallax-content h2 {
-      font-size: 32px;
+      font-size: 28px;
+      margin-bottom: 15px;
     }
 
     .parallax-content p {
       font-size: 16px;
+      margin-bottom: 20px;
+    }
+  }
+
+  @media(max-width: 480px) {
+    .parallax-section {
+      height: 400px;
+    }
+
+    .parallax-content {
+      padding: 0 15px;
+    }
+
+    .parallax-content h2 {
+      font-size: 22px;
+      margin-bottom: 12px;
+    }
+
+    .parallax-content p {
+      font-size: 14px;
+      margin-bottom: 18px;
+    }
+
+    .secondary-button {
+      padding: 10px 20px;
+      font-size: 0.9rem;
     }
   }
 </style>

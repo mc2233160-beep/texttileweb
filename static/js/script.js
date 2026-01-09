@@ -18,8 +18,7 @@
         } catch (error) {
             console.error('Initialization error:', error);
         }
-
-    };
+    });
 
     /**
      * Initialize DOM elements
