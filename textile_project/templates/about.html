@@ -37,7 +37,7 @@
 
     /* Hero Section */
     .hero {
-      background: url('images/about-bg.jpg') no-repeat center center/cover;
+      background: url('{% static "images/bg.jpeg" %}') no-repeat center center/cover;
       color: white;
       text-align: center;
       padding: 120px 20px 60px;
@@ -204,7 +204,7 @@
         <p>Over the years, we have proudly served renowned brands, and our expertise spans direct exports and representing overseas brands in India, positioning us as an ideal partner for importers, distributors, and hospitality businesses worldwide seeking reliable, high-quality textile solutions.</p>
       </div>
       <div class="about-image">
-        <img src="{% static 'images/fabric-sample.jpg' %}" alt="Premium Linens">
+        <img src="{% static 'images/fabric.jpeg' %}" alt="Premium Linens">
       </div>
     </div>
   </section>
@@ -230,5 +230,4 @@
   </section>
      
 
-    <script src="script.js"></script>
 {% endblock %}
