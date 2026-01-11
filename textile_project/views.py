@@ -1,8 +1,8 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.core.mail import send_mail
 from django.conf import settings
 from django.contrib import messages
-from .models import ContactRequest
+from .models import ContactRequest, Category, Product
 
 def index(request):
     return render(request, 'index.html')
@@ -11,7 +11,13 @@ def about(request):
     return render(request, 'about.html')
 
 def products(request):
-    return render(request, 'products.html')
+    categories = Category.objects.all()
+    return render(request, 'products.html', {'categories': categories})
+
+def category_products(request, category_slug):
+    category = get_object_or_404(Category, slug=category_slug)
+    products = Product.objects.filter(category=category)
+    return render(request, 'category_products.html', {'category': category, 'products': products})
 
 def fabrics(request):
     return render(request, 'fabrics.html')
@@ -71,22 +77,6 @@ def contact(request):
 
 def thank_you(request):
     return render(request, 'thank_you.html')
-
-# Product Categories
-def table_linen(request):
-    return render(request, 'table-linen.html')
-
-def bed_linen(request):
-    return render(request, 'bed-linen.html')
-
-def bath_linen(request):
-    return render(request, 'bath-linen.html')
-
-def chair_linen(request):
-    return render(request, 'chair-linen.html')
-
-def napkins(request):
-    return render(request, 'napkins.html')
 
 def premium_fabric(request):
     return render(request, 'premium-fabric.html')

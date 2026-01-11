@@ -12,126 +12,23 @@
       </div>
 
       <div class="products-grid">
-        
-        <!-- Table Linen -->
+        {% for category in categories %}
         <div class="product-card">
           <div class="card-inner">
             <div class="card-front">
-              <img src="{% static 'images/tableLinen.jpeg' %}" alt="Table Linen">
+              <img src="{% static category.image %}" alt="{{ category.name }}">
             </div>
             <div class="card-back">
-              <h3>Table Linen</h3>
-              <p>Premium tablecloths, overlays, underlays, and spandex fitted covers. Perfect for formal dining, banquets, and special events.</p>
-              <ul>
-                <li>Formal Tablecloths</li>
-                <li>Table Overlays & Underlays</li>
-                <li>Spandex Lycra Fitted Covers</li>
-                <li>Moulton Table Protectors</li>
-              </ul>
-              <a href="{% url 'table_linen' %}">View Collection</a>
+              <h3>{{ category.name }}</h3>
+              <p>{{ category.description }}</p>
+              <a href="{% url 'category_products' category.slug %}">View Collection</a>
             </div>
           </div>
         </div>
-
-        <!-- Chair Linen -->
-        <div class="product-card">
-          <div class="card-inner">
-            <div class="card-front">
-              <img src="{% static 'images/ChairLinen.jpeg' %}" alt="Chair Linen">
-            </div>
-            <div class="card-back">
-              <h3>Chair Linen</h3>
-              <p>Elegant chair covers and accessories to complement your table settings. Available in various styles and fabrics.</p>
-              <ul>
-                <li>Chair Covers</li>
-                <li>Chair Caps</li>
-                <li>Chair Bow</li>
-              </ul>
-              <a href="{% url 'chair_linen' %}">View Collection</a>
-            </div>
-          </div>
-        </div>
-
-        <!-- Napkins -->
-        <div class="product-card">
-          <div class="card-inner">
-            <div class="card-front">
-              <img src="{% static 'images/Napkins.jpeg' %}" alt="Napkins">
-            </div>
-            <div class="card-back">
-              <h3>Napkins</h3>
-              <p>High-quality napkins for fine dining, banquets, and public areas. Available in multiple designs and premium fabrics.</p>
-              <ul>
-                <li>Fine Dining Napkins</li>
-                <li>Banquet Napkins</li>
-                <li>Public Area Napkins</li>
-              </ul>
-              <a href="{% url 'napkins' %}">View Collection</a>
-            </div>
-          </div>
-        </div>
-
-        <!-- Bed Linen -->
-        <div class="product-card">
-          <div class="card-inner">
-            <div class="card-front">
-              <img src="{% static 'images/bedLinen.jpeg' %}" alt="Bed Linen">
-            </div>
-            <div class="card-back">
-              <h3>Bed Linen</h3>
-              <p>Luxury bedding solutions for hospitality and healthcare. Premium quality sheets, covers, and pillowcases.</p>
-              <ul>
-                <li>Bed Sheets</li>
-                <li>Bed Covers</li>
-                <li>Duvet Covers</li>
-                <li>Pillow Covers</li>
-              </ul>
-              <a href="{% url 'bed_linen' %}">View Collection</a>
-            </div>
-          </div>
-        </div>
-
-        <!-- Bath Linen -->
-        <div class="product-card">
-          <div class="card-inner">
-            <div class="card-front">
-              <img src="{% static 'images/bathLinen.jpeg' %}" alt="Bath Linen">
-            </div>
-            <div class="card-back">
-              <h3>Bath Linen</h3>
-              <p>Complete bathroom textile solutions including luxury towels, bathrobes, and accessories for hospitality and spa industries.</p>
-              <ul>
-                <li>Bath Robes</li>
-        
-              </ul>
-              <a href="{% url 'bath_linen' %}">View Collection</a>
-            </div>
-          </div>
-        </div>
-
-        <!-- Premium Fabrics -->
-        <div class="product-card">
-          <div class="card-inner">
-            <div class="card-front">
-              <img src="{% static 'images/fabric.jpeg' %}" alt="Premium Fabrics">
-            </div>
-            <div class="card-back">
-              <h3>Premium Fabrics</h3>
-              <p>High-quality fabrics for sophisticated designs, crafted with precision and available in wider widths for versatile applications.</p>
-              <ul>
-                <li>Damask Fabric</li>
-                <li>Jacquard Wider Width Fabric (120 inches)</li>
-              </ul>
-              <a href="{% url 'premium_fabric' %}">View Collection</a>
-            </div>
-          </div>
-        </div>
-
+        {% endfor %}
       </div>
     </div>
-  </main>
-  
-  
+</main>
 
-  <script src="script.js"></script>
+<script src="script.js"></script>
 {% endblock %}
