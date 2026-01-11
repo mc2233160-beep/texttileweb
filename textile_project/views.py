@@ -35,11 +35,35 @@ def contact(request):
             message=message_content
         )
 
-        # Logic to send email would go here.
-        # For now, we'll just simulate it and redirect.
-        # print("Email sent to support for", name, email)
-        
-        # In a real app, use send_mail()
+        # Send email notification
+        email_subject = f'New Enquiry from {name} - {subject_raw}'
+        email_body = f"""
+        You have received a new enquiry from your website contact form.
+
+        Details:
+        ----------------
+        Name: {name}
+        Email: {email}
+        Phone: {phone}
+        Company: {company}
+        Subject: {subject_raw}
+        ----------------
+
+        Message:
+        {message_content}
+        """
+
+        try:
+            send_mail(
+                email_subject,
+                email_body,
+                settings.EMAIL_HOST_USER,
+                ['sales@jyoticreation.co'],
+                fail_silently=False
+            )
+        except Exception as e:
+            # Optional: Log the error for debugging purposes
+            print(f"Failed to send email. Error: {e}")
         
         return redirect('thank_you')
 
