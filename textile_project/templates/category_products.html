@@ -17,7 +17,7 @@
             <div class="product-card">
                 <div class="card-inner">
                     <div class="card-front">
-                        <img src="{% static product.image %}" alt="{{ product.name }}" style="width: 100%; height: 300px; object-fit: cover;">
+                        <img src="{% static 'products/'|add:product.image %}" alt="{{ product.name }}" style="width: 100%; height: 300px; object-fit: cover;">
                     </div>
                     <div class="card-back">
                         <h3>{{ product.name }}</h3>
