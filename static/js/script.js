@@ -15,6 +15,8 @@
             setupEventListeners();
             setupNavigation();
             handleProductPage();
+            initLightbox();
+            initSmoothScrolling();
         } catch (error) {
             console.error('Initialization error:', error);
         }
@@ -30,6 +32,9 @@
             domElements.mainImage = document.getElementById('mainProductImage');
             domElements.colorOptions = document.getElementById('colorOptions');
             domElements.designOptions = document.getElementById('designOptions');
+            domElements.lightbox = document.getElementById('lightbox');
+            domElements.lightboxImage = document.getElementById('lightboxImage');
+            domElements.closeLightbox = document.getElementById('closeLightbox');
         }
 
         /**
@@ -49,6 +54,11 @@
 
             if (domElements.designOptions) {
                 domElements.designOptions.addEventListener('click', handleDesignSelection);
+            }
+
+            // Lightbox
+            if (domElements.closeLightbox) {
+                domElements.closeLightbox.addEventListener('click', () => domElements.lightbox.style.display = 'none');
             }
         }
 
@@ -71,7 +81,7 @@
          * @param {Event} e - The click event
          */
         function handleOutsideClick(e) {
-            if (!domElements.navToggle.contains(e.target) && !domElements.navMenu.contains(e.target)) {
+            if (domElements.navToggle && !domElements.navToggle.contains(e.target) && domElements.navMenu && !domElements.navMenu.contains(e.target)) {
                 domElements.navToggle.classList.remove('active');
                 domElements.navMenu.classList.remove('active');
                 if (domElements.navBackdrop) domElements.navBackdrop.classList.remove('active');
@@ -156,7 +166,7 @@
 
             // Update active state
             const buttons = domElements.designOptions.querySelectorAll('.variant-btn');
-            buttons.forEach(btn => btn.classList.remove('active'));
+            buttons.forEach(.btn => btn.classList.remove('active'));
             target.classList.add('active');
 
             // Update product form
@@ -267,8 +277,6 @@
             if (product) {
                 document.getElementById('productName').textContent = product.name;
                 document.getElementById('productDescription').textContent = product.description;
-                // Set the initial image source. For lazy loading to work, this should be the fallback image or use data-src
-                // Since this function runs on DOMContentLoaded, we'll set the src directly for now.
                 document.getElementById('mainProductImage').src = product.image;
                 document.getElementById('breadcrumb-category').textContent = product.category;
                 document.getElementById('breadcrumb-product').textContent = product.name;
@@ -285,12 +293,12 @@
                 'green': 'https://images.pexels.com/photos/271897/pexels-photo-271897.jpeg?auto=compress&cs=tinysrgb&w=600'
             };
 
-            if (colorImages[color] && mainImage) {
+            if (colorImages[color] && domElements.mainImage) {
                 // Apply a quick fade transition for a smoother color change effect
-                mainImage.style.opacity = '0';
+                domElements.mainImage.style.opacity = '0';
                 setTimeout(() => {
-                    mainImage.src = colorImages[color];
-                    mainImage.style.opacity = '1';
+                    domElements.mainImage.src = colorImages[color];
+                    domElements.mainImage.style.opacity = '1';
                 }, 150);
             }
         }
@@ -313,82 +321,6 @@
                 productField.value = productString;
             }
         }
-
-
-        // --- Form Handling ---
-
-        // Enquiry Form
-        const enquiryForm = document.getElementById('enquiryForm');
-        if (enquiryForm) {
-            enquiryForm.addEventListener('submit', function (e) {
-                e.preventDefault();
-                handleFormSubmission(this, 'enquiry');
-            });
-        }
-
-        // Contact Form
-        const contactForm = document.getElementById('contactForm');
-        if (contactForm) {
-            contactForm.addEventListener('submit', function (e) {
-                e.preventDefault();
-                handleFormSubmission(this, 'contact');
-            });
-        }
-
-        function handleFormSubmission(form, type) {
-            // Basic form validation
-            const requiredFields = form.querySelectorAll('[required]');
-            let isValid = true;
-
-            requiredFields.forEach(field => {
-                if (!field.value.trim()) {
-                    field.style.borderColor = '#dc2626'; // Tailwind red-600
-                    isValid = false;
-                } else {
-                    field.style.borderColor = '#d1d5db'; // Tailwind gray-300
-                }
-            });
-
-            // Email validation
-            const emailField = form.querySelector('input[type="email"]');
-            if (emailField && emailField.value) {
-                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-                if (!emailRegex.test(emailField.value)) {
-                    emailField.style.borderColor = '#dc2626';
-                    isValid = false;
-                }
-            }
-
-            if (isValid) {
-                // Show success message
-                const submitBtn = form.querySelector('.submit-btn');
-                const originalText = submitBtn.textContent;
-
-                submitBtn.textContent = 'Sending...';
-                submitBtn.disabled = true;
-
-                // Simulate form submission
-                setTimeout(() => {
-                    submitBtn.textContent = 'Message Sent!';
-                    submitBtn.style.backgroundColor = '#16a34a'; // Tailwind green-600
-
-                    // Reset form after 2 seconds
-                    setTimeout(() => {
-                        form.reset();
-                        submitBtn.textContent = originalText;
-                        submitBtn.style.backgroundColor = '#004080'; // Original button color
-                        submitBtn.disabled = false;
-
-                        // Show thank you message
-                        alert('Thank you for your inquiry! We will get back to you within 24 hours.');
-                    }, 2000);
-                }, 1000);
-            } else {
-                // Show error message
-                alert('Please fill in all required fields correctly.');
-            }
-        }
-
 
         /**
          * Initialize smooth scrolling for anchor links
@@ -421,118 +353,16 @@
         }
 
         /**
-         * Initialize lazy loading for images
+         * Initialize the lightbox functionality
          */
-        function initLazyLoading() {
-            // Only initialize if IntersectionObserver is supported
-            if (!('IntersectionObserver' in window)) {
-                // Fallback: Load all images immediately
-                document.querySelectorAll('img[data-src]').forEach(img => {
-                    if (img.dataset.src) {
-                        img.src = img.dataset.src;
-                        img.removeAttribute('data-src');
-                    }
-                });
-                return;
-            }
-
-            const imageObserver = new IntersectionObserver((entries, observer) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        const img = entry.target;
-                        if (img.dataset.src) {
-                            // Use requestIdleCallback if available for better performance
-                            const loadImage = () => {
-                                img.src = img.dataset.src;
-                                img.removeAttribute('data-src');
-                                img.style.opacity = '1';
-                            };
-
-                            if ('requestIdleCallback' in window) {
-                                window.requestIdleCallback(loadImage, { timeout: 2000 });
-                            } else {
-                                loadImage();
-                            }
-                        }
-                        observer.unobserve(img);
-                    }
-                });
-            }, {
-                rootMargin: '200px', // Start loading images 200px before they're in viewport
-                threshold: 0.01
-            });
-
-            document.querySelectorAll('img[data-src]').forEach(img => {
-                // Only apply transition if the image hasn't loaded immediately
-                if (!img.complete) {
-                    img.style.opacity = '0';
-                    img.style.transition = 'opacity 0.3s ease';
-
-                    // Handle image load errors
-                    img.addEventListener('error', function () {
-                        this.style.opacity = '1';
-                        this.alt = 'Image could not be loaded';
-                        // Optionally set a placeholder image
-                        // this.src = 'path/to/placeholder.jpg';
-                    });
+        function initLightbox() {
+            document.body.addEventListener('click', function(e) {
+                if (e.target.matches('.product-gallery-item img')) {
+                    domElements.lightboxImage.src = e.target.src;
+                    domElements.lightbox.style.display = 'block';
                 }
-
-                imageObserver.observe(img);
             });
         }
-
-        /**
-         * Initialize reveal animations for cards and sections
-         */
-        function initRevealAnimations() {
-            // Remove loading class once page is loaded
-            document.body.classList.add('loaded');
-
-            // Only use IntersectionObserver if supported
-            if (!('IntersectionObserver' in window)) {
-                // Fallback: Show all cards immediately
-                document.querySelectorAll('.category-card, .product-card, .fabric-card, .mission-card, .trust-item')
-                    .forEach(card => {
-                        card.style.opacity = '1';
-                        card.style.transform = 'translateY(0)';
-                    });
-                return;
-            }
-
-            const cards = document.querySelectorAll('.category-card, .product-card, .fabric-card, .mission-card, .trust-item');
-
-            const cardObserver = new IntersectionObserver((entries) => {
-                entries.forEach((entry, index) => {
-                    if (entry.isIntersecting) {
-                        // Use requestAnimationFrame for smoother animations
-                        requestAnimationFrame(() => {
-                            // Apply staggered delay based on the card's position
-                            setTimeout(() => {
-                                entry.target.style.opacity = '1';
-                                entry.target.style.transform = 'translateY(0)';
-                                cardObserver.unobserve(entry.target);
-                            }, Math.min(index * 50, 300)); // Cap the maximum delay at 300ms
-                        });
-                    }
-                });
-            }, {
-                threshold: 0.1,
-                rootMargin: '0px 0px -50px 0px' // Start animation when element is 50px from bottom of viewport
-            });
-
-            cards.forEach(card => {
-                card.style.opacity = '0';
-                card.style.transform = 'translateY(20px)';
-                card.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
-                card.style.willChange = 'opacity, transform';
-                cardObserver.observe(card);
-            });
-        }
-
-        // Initialize all components
-        initSmoothScrolling();
-        initLazyLoading();
-        initRevealAnimations();
 
     }); // End of DOMContentLoaded
 })(); // End of IIFE

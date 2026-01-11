@@ -84,14 +84,11 @@ WSGI_APPLICATION = "textile_project.wsgi.application"
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
 # Default to SQLite if DB_NAME is not set (useful for local dev without env vars)
-# Default to SQLite if DB_NAME is not set (useful for local dev without env vars)
 # Database configuration
-# 1. Look for DATABASE_URL (Render/Production)
 if os.getenv('DATABASE_URL'):
     DATABASES = {
         'default': dj_database_url.config(conn_max_age=600, ssl_require=True)
     }
-# 2. Look for explicit DB vars (Local Dev - MySQL/Postgres)
 elif os.getenv('DB_NAME'):
     DATABASES = {
         'default': {
@@ -103,7 +100,6 @@ elif os.getenv('DB_NAME'):
             'PORT': os.getenv('DB_PORT', '3306'),
         }
     }
-# 3. Fallback to SQLite
 else:
     DATABASES = {
         'default': {
@@ -153,6 +149,16 @@ STATICFILES_DIRS = [
     BASE_DIR / "static",
 ]
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+
+# Email Configuration (for Hostinger)
+# Make sure to set these environment variables in your hosting panel
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = os.getenv('EMAIL_HOST', 'smtp.hostinger.com')
+EMAIL_PORT = int(os.getenv('EMAIL_PORT', 587))
+EMAIL_USE_TLS = os.getenv('EMAIL_USE_TLS', 'True') == 'True'
+EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER') # Your full email address, e.g., sales@jyoticreation.co
+EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD') # Your email password
+DEFAULT_FROM_EMAIL = os.getenv('DEFAULT_FROM_EMAIL', EMAIL_HOST_USER)
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field

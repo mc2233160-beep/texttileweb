@@ -6,6 +6,9 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>{% block title %}Premium Textile & Linen Supplier{% endblock %}</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="{% static 'css/style.css' %}" />
 </head>
 
@@ -61,7 +64,7 @@
     <div class="container">
       <div class="footer-content">
         <div class="footer-section">
-          <img src="{% static 'images/JC Logo.JPG' %}" class="logo" alt="JyotiCreation logo" /><br>
+          <img src="{% static 'images/JC Logo.JPG' %}" class-="logo" alt="JyotiCreation logo" /><br>
           <p>Committed to excellence, Jyoti Creation delivers elegant, durable, and premium linens for every client
             seeking quality.</p>
 
@@ -99,31 +102,13 @@
     </div>
   </footer>
 
+  <!-- Lightbox Modal -->
+  <div id="lightbox" class="lightbox">
+    <span class="close-lightbox" id="closeLightbox">&times;</span>
+    <img class="lightbox-content" id="lightboxImage">
+  </div>
+
   <script src="{% static 'js/script.js' %}"></script>
-  <script>
-    // Simple mobile nav toggle
-    (function () {
-      const navToggle = document.getElementById('navToggle');
-      const navMenu = document.getElementById('navMenu');
-
-      if (navToggle && navMenu) {
-        navToggle.addEventListener('click', () => {
-          navMenu.classList.toggle('active');
-          navToggle.classList.toggle('active');
-        });
-
-        // Close mobile menu when clicking a link (nice convenience)
-        document.querySelectorAll('.nav-menu a').forEach(a => {
-          a.addEventListener('click', () => {
-            if (navMenu.classList.contains('active')) {
-              navMenu.classList.remove('active');
-              navToggle.classList.remove('active');
-            }
-          });
-        });
-      }
-    })();
-  </script>
 </body>
 
 </html>
