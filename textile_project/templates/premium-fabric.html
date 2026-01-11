@@ -1,8 +1,9 @@
 {% extends 'base.html' %}
 {% load static %}
 
+{% block title %}Premium Fabric - TextilePro{% endblock %}
+
 {% block content %}
-{% block title %}Chair Linen{% endblock %}
 
 <style>
     /* small reset so spacing is predictable */
@@ -156,14 +157,16 @@
 
     <div class="product-grid">
       <!-- sample cards -->
-      <div class="product-card" data-images='["{% static 'products/pf1.png' %}"]'>
-        <img src="{% static 'products/pf1.png' %}" alt="Damask Fabric">
+      <div class="product-detail">
+        <div class="product-image">
+          <img src="{% static fabric_image %}" alt="Premium Fabric">
+        </div>
         <div class="arrow-indicator">→</div>
         <div class="product-info"> <h3>Damask Fabric</h3></div>
       </div>
 
-      <div class="product-card" data-images='["{% static 'products/pf2.png' %}"]'>
-        <img src="{% static 'products/pf2.png' %}" alt="Jacquard Wider Width Fabric">
+      <div class="product-card">
+        <img src="{% static 'images/fabric.jpeg' %}" alt="Jacquard Wider Width Fabric">
         <div class="arrow-indicator">→</div>
         <div class="product-info"><h3>Jacquard Wider Width Fabric</h3></div>
       </div>

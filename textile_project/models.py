@@ -44,7 +44,7 @@ class Product(models.Model):
     slug = models.SlugField(max_length=200, unique=True)
     category = models.ForeignKey(Category, on_delete=models.CASCADE, related_name='products')
     description = models.TextField()
-    image = models.URLField(max_length=500)
+    image = models.CharField(max_length=255)  # Stores path relative to static directory
     available_colors = models.ManyToManyField(Color, blank=True)
     available_designs = models.ManyToManyField(Design, blank=True)
     is_featured = models.BooleanField(default=False)

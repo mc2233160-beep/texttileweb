@@ -32,11 +32,11 @@
           <a href="{% url 'products' %}"
             class="nav-link {% if 'products' in request.path %}active{% endif %}">Products</a>
           <div class="dropdown-content">
-            <a href="{% url 'table_linen' %}">Table Linen</a>
-            <a href="{% url 'chair_linen' %}">Chair Linen</a>
-            <a href="{% url 'napkins' %}">Napkins</a>
-            <a href="{% url 'bed_linen' %}">Bed Linen</a>
-            <a href="{% url 'bath_linen' %}">Bath Linen</a>
+            <a href="{% url 'category_products' 'table-linen' %}">Table Linen</a>
+            <a href="{% url 'category_products' 'chair-linen' %}">Chair Linen</a>
+            <a href="{% url 'category_products' 'napkins' %}">Napkins</a>
+            <a href="{% url 'category_products' 'bed-linen' %}">Bed Linen</a>
+            <a href="{% url 'category_products' 'bath-linen' %}">Bath Linen</a>
             <a href="{% url 'premium_fabric' %}">Premium Fabrics</a>
           </div>
         </div>
