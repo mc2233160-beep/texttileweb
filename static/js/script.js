@@ -166,7 +166,7 @@
 
             // Update active state
             const buttons = domElements.designOptions.querySelectorAll('.variant-btn');
-            buttons.forEach(.btn => btn.classList.remove('active'));
+            buttons.forEach(btn => btn.classList.remove('active'));
             target.classList.add('active');
 
             // Update product form
